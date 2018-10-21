@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="机器学习,SVM,支持向量机,软间隔">
 
 
 
@@ -113,16 +113,22 @@
 
 
 
-<meta name="description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="机器学习杂货铺2号店">
-<meta property="og:url" content="https://blog.csdn.net/LoseInVain/categories/Machine-Learning/page/2/index.html">
+<meta name="description" content="前言在以前的文章中，我们介绍了支持向量机的基本表达式，那是基于硬间隔线性支持向量机的，即是假设数据是完全线性可分的，在数据是近似线性可分的时候，我们不能继续使用硬间隔SVM了，而是需要采用软间隔SVM，在这里我们简单介绍下软间隔线性支持向量机。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。如有误，请联系指正。转载请注明出处。联系方式：e-mail:">
+<meta name="keywords" content="机器学习,SVM,支持向量机,软间隔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SVM沉思录5——软间隔线性支持向量机">
+<meta property="og:url" content="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm5/index.html">
 <meta property="og:site_name" content="机器学习杂货铺2号店">
-<meta property="og:description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
+<meta property="og:description" content="前言在以前的文章中，我们介绍了支持向量机的基本表达式，那是基于硬间隔线性支持向量机的，即是假设数据是完全线性可分的，在数据是近似线性可分的时候，我们不能继续使用硬间隔SVM了，而是需要采用软间隔SVM，在这里我们简单介绍下软间隔线性支持向量机。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。如有误，请联系指正。转载请注明出处。联系方式：e-mail:">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://blog.csdn.net/imgs/svm/hard_margin_svm.png">
+<meta property="og:image" content="https://blog.csdn.net/imgs/svm/soft_margin_svm.png">
+<meta property="og:image" content="https://blog.csdn.net/imgs/svm/soft_margin_xi.png">
+<meta property="og:updated_time" content="2018-10-21T02:04:36.067Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="机器学习杂货铺2号店">
-<meta name="twitter:description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
+<meta name="twitter:title" content="SVM沉思录5——软间隔线性支持向量机">
+<meta name="twitter:description" content="前言在以前的文章中，我们介绍了支持向量机的基本表达式，那是基于硬间隔线性支持向量机的，即是假设数据是完全线性可分的，在数据是近似线性可分的时候，我们不能继续使用硬间隔SVM了，而是需要采用软间隔SVM，在这里我们简单介绍下软间隔线性支持向量机。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。如有误，请联系指正。转载请注明出处。联系方式：e-mail:">
+<meta name="twitter:image" content="https://blog.csdn.net/imgs/svm/hard_margin_svm.png">
 
 
 
@@ -152,13 +158,13 @@
 
 
 
-  <link rel="canonical" href="https://blog.csdn.net/LoseInVain/categories/Machine-Learning/page/2/">
+  <link rel="canonical" href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm5/">
 
 
 
 
 
-  <title>Category: Machine Learning | 机器学习杂货铺2号店</title>
+  <title>SVM沉思录5——软间隔线性支持向量机 | 机器学习杂货铺2号店</title>
   
 
 
@@ -177,7 +183,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 	
 	<a href="https://github.com/FesianXu"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png" alt="Follow Me on GitHub"></a>
@@ -315,57 +321,360 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>Machine Learning<small>Category</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm5/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="徐飞翔(Fesian Xu)">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/site_imgs/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="机器学习杂货铺2号店">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/10/21/svm/svm1/" itemprop="url">
-              
-                <span itemprop="name">SVM沉思录1——什么是支持向量机SVM</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">SVM沉思录5——软间隔线性支持向量机</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-10-21T12:16:07+08:00" content="2018-10-21">
-          10-21
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-21T12:16:07+08:00">
+                2018-10-21
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/21/svm/svm5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/10/21/svm/svm5/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/21/svm/svm5/" class="leancloud_visitors" data-flag-title="SVM沉思录5——软间隔线性支持向量机">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font size="6"><b>前言</b></font><br><strong>在以前的文章中，我们介绍了支持向量机的基本表达式，那是基于硬间隔线性支持向量机的，即是假设数据是完全线性可分的，在数据是近似线性可分的时候，我们不能继续使用硬间隔SVM了，而是需要采用软间隔SVM，在这里我们简单介绍下软间隔线性支持向量机。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。</strong><br><strong>如有误，请联系指正。转载请注明出处。</strong><br><em>联系方式：</em><br><strong>e-mail</strong>: <a href="FesianXu@163.com"><code>FesianXu@163.com</code></a><br><strong>QQ</strong>: <code>973926198</code><br><strong>github</strong>: <a href="https://github.com/FesianXu" target="_blank" rel="noopener"><code>https://github.com/FesianXu</code></a><br><strong>有关代码开源</strong>: <a href="https://github.com/FesianXu/AI_Blog/tree/master/SVM相关" target="_blank" rel="noopener">click</a></p>
+<hr>
+<h1 id="软间隔最大化"><a href="#软间隔最大化" class="headerlink" title="软间隔最大化"></a>软间隔最大化</h1><p>在文章<a href="http://blog.csdn.net/LoseInVain/article/details/78636285">《SVM的拉格朗日函数表示以及其对偶问题》</a>和<a href="http://blog.csdn.net/LoseInVain/article/details/78636176">《SVM支持向量机的目的和起源》</a>中，我们推导了SVM的基本公式，那时的基本假设之一就是<strong>数据是完全线性可分的</strong>，即是总是存在一个超平面$W^TX+b$可以将数据完美的分开，但是正如我们在<a href="http://blog.csdn.net/LoseInVain/article/details/78636285">《SVM的拉格朗日函数表示以及其对偶问题》</a>中最后结尾所说的：</p>
+<blockquote>
+<p>但是，在现实生活中的数据往往是或本身就是非线性可分但是近似线性可分的，或是线性可分但是具有噪声的，以上两种情况都会导致在现实应用中，硬间隔线性支持向量机变得不再实用</p>
+</blockquote>
+<p>因此，我们引入了<strong>软间隔线性支持向量机</strong>这个概念，<strong>硬间隔</strong>和<strong>软间隔</strong>的区别如下图所示：<br><img src="/imgs/svm/hard_margin_svm.png" alt="hard_margin"></p>
+<p><img src="/imgs/svm/soft_margin_svm.png" alt="soft_margin"></p>
+<p>我们的解决方案很简单，就是在软间隔SVM中，我们的分类超平面既要<strong>能够尽可能地将数据类别分对，又要使得支持向量到超平面的间隔尽可能地大</strong>。具体来说，因为线性不可分意味着某些样本点不能满足函数间隔大于等于1的条件，即是$\exists i, 1-y_i(W^Tx_i+b) &gt; 0$。解决方案就是通过对每一个样本点$(x_i, y_i)$引入一个松弛变量$\xi_i \geq 0$，对于那些不满足约束条件的样本点，使得函数间隔加上松弛变量之后大于等于1，于是我们的约束条件就变为了：</p>
+<script type="math/tex; mode=display">
+y_i(W^T x_i+b)+\xi_i \geq 1 \\
+= y_i(W^T x_i+b) \geq 1-\xi_i
+\tag{1.1}</script><p>图像表示如：<br><img src="/imgs/svm/soft_margin_xi.png" alt="soft_margin_xi"></p>
+<p>超平面两侧对称的虚线为支持向量，支持向量到超平面的间隔为1。<strong>在硬间隔SVM中本应该是在虚线内侧没有任何的样本点的，而在软间隔SVM中，因为不是完全的线性可分，所以虚线内侧存在有样本点，通过向每一个在虚线内侧的样本点添加松弛变量$\xi_i$，将这些样本点搬移到支持向量虚线上。而本身就是在虚线外的样本点的松弛变量则可以设为0。</strong><br>于是，给每一个松弛变量赋予一个代价$\xi_i$，我们的目标函数就变成了：</p>
+<script type="math/tex; mode=display">
+f(W, \xi) = \frac{1}{2} \Vert W \Vert ^2+C \sum_{i=1}^N\xi_i \\
+i = 1,2, \cdots,N
+\tag{1.2}</script><p>其中$C &gt; 0$称为<strong>惩罚参数</strong>，C值大的时候对误分类的惩罚增大，C值小的时候对误分类的惩罚减小，$(1.2)$有两层含义：使得$\frac{1}{2} \Vert W \Vert^2$尽量小即是间隔尽可能大，同时使得误分类的数量尽量小，C是调和两者的系数，是一个超参数。<br>于是我们的软间隔SVM的问题可以描述为：</p>
+<script type="math/tex; mode=display">
+\min_{W,b,\xi} \frac{1}{2} \Vert W \Vert^2+C \sum_{i=1}^N\xi_i \\
+s.t.　　y_i(W^T x_i+b) \geq 1-\xi_i \\
+\xi_i \geq 0 \\
+i = 1,2, \cdots, N
+\tag{1.3}</script><p>表述为标准形式：</p>
+<script type="math/tex; mode=display">
+\min_{W,b,\xi} \frac{1}{2} \Vert W \Vert ^2+C \sum_{i=1}^N\xi_i \\
+s.t.　　1-\xi_i-y_i(W^T x_i+b) \leq 0 \\
+-\xi_i \leq 0 \\
+i = 1,2, \cdots, N
+\tag{1.4}</script><h1 id="软间隔SVM的拉格朗日函数表述和对偶问题"><a href="#软间隔SVM的拉格朗日函数表述和对偶问题" class="headerlink" title="软间隔SVM的拉格朗日函数表述和对偶问题"></a>软间隔SVM的拉格朗日函数表述和对偶问题</h1><p>我们采用<a href="http://blog.csdn.net/LoseInVain/article/details/78636285">《SVM的拉格朗日函数表示以及其对偶问题》</a>中介绍过的相似的方法，将$(1.4)$得到其对偶问题。过程如下：<br>将$(1.4)$转换为其拉格朗日函数形式：</p>
+<script type="math/tex; mode=display">
+L(W, b, \xi, \alpha, \beta) = 
+\frac{1}{2} \Vert W \Vert^2+C \sum_{i=1}^N\xi_i+\sum_{i=1}^N \alpha_i(1-\xi_i-y_i(W^T x_i+b))- \sum_{i=1}^N \beta_i \xi_i \\
+= \frac{1}{2} \Vert W \Vert^2+C \sum_{i=1}^N\xi_i+ \sum_{i=1}^N \alpha_i - \sum_{i=1}^N \alpha_i \xi_i - \sum_{i=1}^N \alpha_i y_i(W^T x_i+b) - \sum_{i=1}^N \beta_i \xi_i \\
+\tag{2.1}</script><p>原问题可以表述为（具体移步<a href="http://blog.csdn.net/loseinvain/article/details/78636341">《最优化问题的对偶问题》</a>）:</p>
+<script type="math/tex; mode=display">
+\min_{W,b,\xi} \max_{\alpha, \beta} L(W, b, \xi, \alpha, \beta)
+\tag{2.2}</script><p>得到其对偶问题为：</p>
+<script type="math/tex; mode=display">
+\max_{\alpha, \beta} \min_{W, b, \xi} L(W, b, \xi, \alpha, \beta)
+\tag{2.3}</script><p>我们先求对偶问题$\theta_D(\alpha, \beta) = \min_{W, b, \xi} L(W, b, \xi, \alpha, \beta)$，根据KKT条件(具体移步<a href="http://blog.csdn.net/loseinvain/article/details/78624888">《拉格朗日乘数法和KKT条件的直观解释》</a>)，我们有：</p>
+<script type="math/tex; mode=display">
+\nabla_{W} L(W, b, \xi, \alpha, \beta) = W-\sum_{i=1}^N\alpha_i y_i x_i = 0
+\tag{2.4}</script><script type="math/tex; mode=display">
+\nabla_{b} L(W, b, \xi, \alpha, \beta) = \sum_{i=1}^N \alpha_i y_i = 0
+\tag{2.5}</script><script type="math/tex; mode=display">
+\nabla_{\xi_i} L(W, b, \xi, \alpha, \beta) = C-\alpha_i-\beta_i = 0
+\tag{2.6}</script><script type="math/tex; mode=display">
+\alpha_i \geq 0, \beta_i \geq 0
+\tag{2.7}</script><p>整理得到：</p>
+<script type="math/tex; mode=display">
+W = \sum_{i=1}^N\alpha_i y_i x_i \\
+\sum_{i=1}^N \alpha_i y_i = 0 \\
+C = \alpha_i+\beta_i
+\tag{2.8}</script><p>将$(2.8)$代入$(2.1)$，有：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+L(W, b, \xi, \alpha, \beta) &= \frac{1}{2} \sum_{i=1}^N\alpha_i y_i x_i \sum_{j=1}^N\alpha_j y_j x_j \\
+&+(\alpha_i+\beta_i)\sum_{i=1}^N \xi_i+\sum_{i=1}^N \alpha_i - \sum_{i=1}^N \alpha_i \xi_i - \sum_{i=1}^N \beta_i \xi_i - \\
+&\sum_{i=1}^N \alpha_iy_i(\sum_{j=1}^N\alpha_j y_j x_j \cdot x_i +b) \\
+&= -\frac{1}{2} \sum_{i=1}^N\sum_{j=1}^N \alpha_i \alpha_j y_i y_j (x_i \cdot x_j)+\sum_{i=1}^N \alpha_i
+\end{aligned}
+\tag{2.9}</script><p>所以问题变为：</p>
+<script type="math/tex; mode=display">
+\max_{\alpha, \beta} \theta_D(\alpha, \beta) = \max_{\alpha} -\frac{1}{2} \sum_{i=1}^N\sum_{j=1}^N \alpha_i \alpha_j y_i y_j (x_i \cdot x_j)+\sum_{i=1}^N \alpha_i
+\tag{2.10}</script><p>表述为最小化问题：</p>
+<script type="math/tex; mode=display">
+\min_{\alpha} \frac{1}{2} \sum_{i=1}^N\sum_{j=1}^N \alpha_i \alpha_j y_i y_j (x_i \cdot x_j)-\sum_{i=1}^N \alpha_i \\
+s.t.　　　\sum_{i=1}^N \alpha_i y_i = 0 \\
+\alpha_i \geq 0 \\
+\beta_i \geq 0 \\
+C = \alpha_i+\beta_i
+\tag{2.11}</script><p>通过将$\beta_i = C-\alpha_i$，$(2.11)$可以化为：</p>
+<script type="math/tex; mode=display">
+\min_{\alpha} \frac{1}{2} \sum_{i=1}^N\sum_{j=1}^N \alpha_i \alpha_j y_i y_j (x_i \cdot x_j)-\sum_{i=1}^N \alpha_i \\
+s.t.　　　\sum_{i=1}^N \alpha_i y_i = 0 \\
+0 \leq \alpha_i \leq C
+\tag{2.12}</script><p>对比文章<a href="http://blog.csdn.net/LoseInVain/article/details/78636285">《SVM的拉格朗日函数表示以及其对偶问题》</a>中的硬间隔SVM的最终的表达式：</p>
+<script type="math/tex; mode=display">
+\min_{\alpha}
+\frac{1}{2}\sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_jy_iy_j(x_i \cdot x_j)- \sum_{i=1}^N\alpha_i</script><script type="math/tex; mode=display">
+s.t. \ \sum_{i=1}^N\alpha_iy_i=0</script><script type="math/tex; mode=display">
+\alpha_i \geq0,i=1,\cdots,N
+\tag{2.13}</script><p>不难发现软间隔SVM只是在对拉格朗日乘子$\alpha_i$的约束上加上了一个上界$C$。<br>我们以后都会利用$(2.12)$求解，接下来我们在<strong>SMO算法</strong>中，也将对式子$(2.12)$进行求解。</p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><ol>
+<li><a href="http://blog.csdn.net/LoseInVain/article/details/78636285">《SVM的拉格朗日函数表示以及其对偶问题》 CSDN</a></li>
+<li><a href="http://blog.csdn.net/LoseInVain/article/details/78636176">《SVM支持向量机的目的和起源》 CSDN</a></li>
+<li><a href="http://blog.csdn.net/loseinvain/article/details/78636341">《最优化问题的对偶问题》 CSDN</a></li>
+<li><a href="http://blog.csdn.net/loseinvain/article/details/78624888">《拉格朗日乘数法和KKT条件的直观解释》 CSDN</a></li>
+<li><a href="https://book.douban.com/subject/10590856/" target="_blank" rel="noopener">《统计学习方法》 豆瓣</a></li>
+</ol>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/site_imgs/wechat.png" alt="徐飞翔(Fesian Xu) WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/site_imgs/alipay.jpg" alt="徐飞翔(Fesian Xu) Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+	
+	<div>
+    
+    <div>
+    
+        <div style="text-align:center;color: #4B0082;font-size:18px;">
+            -------------The End
+            <i class="fa fa-paw"></i>
+            Thanks For Your Reading-------------
+        </div>
+    
+</div>
+
+    
+    </div>
+	
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          
+            <a href="/tags/SVM/" rel="tag"><i class="fa fa-tag"></i> SVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/21/svm/svm4/" rel="next" title="SVM沉思录4——最优化问题的对偶问题">
+                <i class="fa fa-chevron-left"></i> SVM沉思录4——最优化问题的对偶问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/21/svm/svm6/" rel="prev" title="SVM沉思录6——支持向量机中的核技巧那些事儿">
+                SVM沉思录6——支持向量机中的核技巧那些事儿 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/categories/Machine-Learning/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/categories/Machine-Learning/">1</a><span class="page-number current">2</span>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+
+</script>
+
+
+
+      
+    </div>
+  </div>
 
 
           </div>
@@ -373,6 +682,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
 
         </div>
         
@@ -393,8 +713,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -513,6 +842,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#软间隔最大化"><span class="nav-number">1.</span> <span class="nav-text">软间隔最大化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#软间隔SVM的拉格朗日函数表述和对偶问题"><span class="nav-number">2.</span> <span class="nav-text">软间隔SVM的拉格朗日函数表述和对偶问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">3.</span> <span class="nav-text">引用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -668,6 +1013,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -719,6 +1068,30 @@
       </style>
     
 
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'FesianXu',
+            repo: 'git@github.com:FesianXu/FesianXu.github.io.git',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '46843ce9ee419af7135c0bceaf4be257522c4761',
+            
+                client_id: 'b1c4e5e986f1c6e8b418'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
     
 
 

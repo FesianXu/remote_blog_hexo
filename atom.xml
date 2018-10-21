@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.csdn.net/LoseInVain/"/>
-  <updated>2018-10-21T02:12:10.976Z</updated>
+  <updated>2018-10-21T12:58:21.704Z</updated>
   <id>https://blog.csdn.net/LoseInVain/</id>
   
   <author>
@@ -17,9 +17,36 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>在TensorFlow中自定义梯度的两种方法</title>
+    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/tensorflow/tf_gradient_define/"/>
+    <id>https://blog.csdn.net/LoseInVain/2018/10/21/tensorflow/tf_gradient_define/</id>
+    <published>2018-10-21T12:53:51.927Z</published>
+    <updated>2018-10-21T12:58:21.704Z</updated>
+    
+    <content type="html"><![CDATA[<p><font size="6"><b>前言</b></font><br>在深度学习中，有时候我们需要对某些节点的梯度进行一些定制，特别是该节点操作不可导（比如阶梯除法如$10 // 3 = 3$），如果实在需要对这个节点进行操作，而且希望其可以反向传播，那么就需要对其进行自定义反向传播时的梯度。在有些场景，如[2]中介绍到的<strong>梯度反转</strong>(gradient inverse)中，就必须在某层节点对反向传播的梯度进行反转，也就是需要更改正常的梯度传播过程，如下图的$-\lambda \dfrac{\partial L_d}{\partial \theta_f}$所示。<br><img src="/imgs/tensorflow/tf_gradient/inversenet.png" alt="inversenet"></p><p>在tensorflow中有若干可以实现定制梯度的方法，这里介绍两种。</p><hr><h1 id="1-重写梯度法"><a href="#1-重写梯度法" class="headerlink" title="1. 重写梯度法"></a>1. 重写梯度法</h1><p>重写梯度法指的是通过tensorflow自带的机制，将某个节点的梯度重写(override)，这种方法的适用性最广。我们这里举个例子[3].</p><p>符号函数的前向传播采用的是阶跃函数$y = \rm{sign}(x)$，如下图所示，我们知道阶跃函数不是连续可导的，因此我们在反向传播时，将其替代为一个可以连续求导的函数$y = \rm{Htanh(x)}$，于是梯度就是大于1和小于-1时为0，在-1和1之间时是1。<br><img src="/imgs/tensorflow/tf_gradient/ops.png" alt="ops"></p><p>使用重写梯度的方法如下，主要是涉及到<code>tf.RegisterGradient()</code>和<code>tf.get_default_graph().gradient_override_map()</code>，前者注册新的梯度，后者重写图中具有名字<code>name=&#39;Sign&#39;</code>的操作节点的梯度，用在新注册的<code>QuantizeGrad</code>替代。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#使用修饰器，建立梯度反向传播函数。其中op.input包含输入值、输出值，grad包含上层传来的梯度</span></span><br><span class="line"><span class="meta">@tf.RegisterGradient("QuantizeGrad")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sign_grad</span><span class="params">(op, grad)</span>:</span></span><br><span class="line">    input = op.inputs[<span class="number">0</span>] <span class="comment"># 取出当前的输入</span></span><br><span class="line">    cond = (input&gt;=<span class="number">-1</span>)&amp;(input&lt;=<span class="number">1</span>) <span class="comment"># 大于1或者小于-1的值的位置</span></span><br><span class="line">    zeros = tf.zeros_like(grad) <span class="comment"># 定义出0矩阵用于掩膜</span></span><br><span class="line">    <span class="keyword">return</span> tf.where(cond, grad, zeros) </span><br><span class="line">    <span class="comment"># 将大于1或者小于-1的上一层的梯度置为0</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#使用with上下文管理器覆盖原始的sign梯度函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">binary</span><span class="params">(input)</span>:</span></span><br><span class="line">    x = input</span><br><span class="line">    <span class="keyword">with</span> tf.get_default_graph().gradient_override_map(&#123;<span class="string">"Sign"</span>:<span class="string">'QuantizeGrad'</span>&#125;):</span><br><span class="line">    <span class="comment">#重写梯度</span></span><br><span class="line">        x = tf.sign(x)</span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"> </span><br><span class="line"><span class="comment">#使用</span></span><br><span class="line">x = binary(x)</span><br></pre></td></tr></table></figure><p>其中的<code>def sign_grad(op, grad):</code>是注册新的梯度的套路，其中的<code>op</code>是当前操作的输入值/张量等，而<code>grad</code>指的是从反向而言的上一层的梯度。</p><hr><p>通常来说，在tensorflow中自定义梯度，函数<code>tf.identity()</code>是很重要的，其API手册如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tf.identity(</span><br><span class="line">    input,</span><br><span class="line">    name=<span class="keyword">None</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></p><p>其会返回一个形状和内容都和输入完全一样的输出，但是你可以自定义其反向传播时的梯度，因此在梯度反转等操作中特别有用。<br>这里再举个反向梯度[2]的例子，也就是梯度为$-\lambda \dfrac{\partial L_d}{\partial \theta_f}$而不是$\lambda \dfrac{\partial L_d}{\partial \theta_f}$。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">x1 = tf.Variable(<span class="number">1</span>)</span><br><span class="line">x2 = tf.Variable(<span class="number">3</span>)</span><br><span class="line">x3 = tf.Variable(<span class="number">6</span>)</span><br><span class="line"><span class="meta">@tf.RegisterGradient('CustomGrad')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CustomGrad</span><span class="params">(op, grad)</span>:</span></span><br><span class="line"><span class="comment">#     tf.Print(grad)</span></span><br><span class="line">    <span class="keyword">return</span> -grad</span><br><span class="line">    </span><br><span class="line">g = tf.get_default_graph()</span><br><span class="line">oo = x1+x2</span><br><span class="line"><span class="keyword">with</span> g.gradient_override_map(&#123;<span class="string">"Identity"</span>: <span class="string">"CustomGrad"</span>&#125;):</span><br><span class="line">    output = tf.identity(oo)</span><br><span class="line">grad_1 = tf.gradients(output, oo)</span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line">    print(sess.run(grad_1))</span><br></pre></td></tr></table></figure></p><p>因为<code>-grad</code>，所以这里的梯度输出是[-1]而不是[1]。有一个我们需要注意的是，在自定义函数<code>def CustomGrad()</code>中，返回的值得是一个张量，而不能返回一个参数，比如<code>return 0</code>，这样会报错，如：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AttributeError: <span class="string">'int'</span> object has no attribute <span class="string">'name'</span></span><br></pre></td></tr></table></figure></p><p>显然，这是因为tensorflow的内部操作需要取返回值的名字而<code>int</code>类型没有名字。</p><p><strong>PS:</strong><code>def CustomGrad()</code>这个函数签名是随便你取的。</p><hr><h1 id="2-stop-gradient法"><a href="#2-stop-gradient法" class="headerlink" title="2. stop_gradient法"></a>2. stop_gradient法</h1><p>对于自定义梯度，还有一种比较简洁的操作，就是利用<code>tf.stop_gradient()</code>函数，我们看下例子[1]：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t = g(x)</span><br><span class="line">y = t + tf.stop_gradient(f(x) - t)</span><br></pre></td></tr></table></figure></p><p>这里，我们本来的前向传递函数是f(x)，但是想要在反向时传递的函数是g(x)，因为在前向过程中，<code>tf.stop_gradient()</code>不起作用，因此<code>+t</code>和<code>-t</code>抵消掉了，只剩下f(x)前向传递；而在反向过程中，因为<code>tf.stop_gradient()</code>的作用，使得f(x)-t的梯度变为了0，从而只剩下g(x)在反向传递。<br>我们看下完整的例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">x1 = tf.Variable(<span class="number">1</span>)</span><br><span class="line">x2 = tf.Variable(<span class="number">3</span>)</span><br><span class="line">x3 = tf.Variable(<span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">f = x1+x2*x3</span><br><span class="line">t = -f</span><br><span class="line"></span><br><span class="line">y1 =  t + tf.stop_gradient(f-t)</span><br><span class="line">y2 = f</span><br><span class="line"></span><br><span class="line">grad_1 = tf.gradients(y1, x1)</span><br><span class="line">grad_2 = tf.gradients(y2, x1)</span><br><span class="line"><span class="keyword">with</span> tf.Session(config=config) <span class="keyword">as</span> sess:</span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line"></span><br><span class="line">    print(sess.run(grad_1))</span><br><span class="line">    print(sess.run(grad_2))</span><br></pre></td></tr></table></figure></p><p>第一个输出为[-1]，第二个输出为[1]，显然也实现了梯度的反转。</p><hr><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>[1]. <a href="https://stackoverflow.com/questions/36456436/how-can-i-define-only-the-gradient-for-a-tensorflow-subgraph/36480182#36480182" target="_blank" rel="noopener">How Can I Define Only the Gradient for a Tensorflow Subgraph?</a><br>[2]. Ganin Y, Ustinova E, Ajakan H, et al. Domain-adversarial training of neural networks[J]. Journal of Machine Learning Research, 2017, 17(1):2096-2030.<br>[3]. <a href="https://blog.csdn.net/qq_16234613/article/details/82937867">tensorflow 实现自定义梯度反向传播</a><br>[4]. <a href="https://uoguelph-mlrg.github.io/tensorflow_gradients/" target="_blank" rel="noopener">Custom Gradients in TensorFlow</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;font size=&quot;6&quot;&gt;&lt;b&gt;前言&lt;/b&gt;&lt;/font&gt;&lt;br&gt;在深度学习中，有时候我们需要对某些节点的梯度进行一些定制，特别是该节点操作不可导（比如阶梯除法如$10 // 3 = 3$），如果实在需要对这个节点进行操作，而且希望其可以反向传播，那么就需要对其进行自定
+      
+    
+    </summary>
+    
+      <category term="TensorFlow Basic API" scheme="https://blog.csdn.net/LoseInVain/categories/TensorFlow-Basic-API/"/>
+    
+    
+      <category term="Deep Learning" scheme="https://blog.csdn.net/LoseInVain/tags/Deep-Learning/"/>
+    
+      <category term="TensorFlow" scheme="https://blog.csdn.net/LoseInVain/tags/TensorFlow/"/>
+    
+  </entry>
+  
+  <entry>
     <title>SVM沉思录6——支持向量机中的核技巧那些事儿</title>
-    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/SVM%E6%B2%89%E6%80%9D%E5%BD%956%E2%80%94%E2%80%94%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E4%B8%AD%E7%9A%84%E6%A0%B8%E6%8A%80%E5%B7%A7%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/"/>
-    <id>https://blog.csdn.net/LoseInVain/2018/10/21/SVM沉思录6——支持向量机中的核技巧那些事儿/</id>
+    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm6/"/>
+    <id>https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm6/</id>
     <published>2018-10-21T04:16:07.946Z</published>
     <updated>2018-10-21T02:12:10.976Z</updated>
     
@@ -49,8 +76,8 @@
   
   <entry>
     <title>SVM沉思录5——软间隔线性支持向量机</title>
-    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/SVM%E6%B2%89%E6%80%9D%E5%BD%955%E2%80%94%E2%80%94%E8%BD%AF%E9%97%B4%E9%9A%94%E7%BA%BF%E6%80%A7%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/"/>
-    <id>https://blog.csdn.net/LoseInVain/2018/10/21/SVM沉思录5——软间隔线性支持向量机/</id>
+    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm5/"/>
+    <id>https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm5/</id>
     <published>2018-10-21T04:16:07.945Z</published>
     <updated>2018-10-21T02:04:36.067Z</updated>
     
@@ -76,8 +103,8 @@
   
   <entry>
     <title>SVM沉思录4——最优化问题的对偶问题</title>
-    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/SVM%E6%B2%89%E6%80%9D%E5%BD%954%E2%80%94%E2%80%94%E6%9C%80%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98%E7%9A%84%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98/"/>
-    <id>https://blog.csdn.net/LoseInVain/2018/10/21/SVM沉思录4——最优化问题的对偶问题/</id>
+    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm4/"/>
+    <id>https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm4/</id>
     <published>2018-10-21T04:16:07.944Z</published>
     <updated>2018-10-21T01:50:27.403Z</updated>
     
@@ -103,8 +130,8 @@
   
   <entry>
     <title>SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释</title>
-    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/SVM%E6%B2%89%E6%80%9D%E5%BD%953%E2%80%94%E2%80%94%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E6%95%B0%E6%B3%95%E5%92%8CKKT%E6%9D%A1%E4%BB%B6%E7%9A%84%E7%9B%B4%E8%A7%82%E8%A7%A3%E9%87%8A/"/>
-    <id>https://blog.csdn.net/LoseInVain/2018/10/21/SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释/</id>
+    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm3/"/>
+    <id>https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm3/</id>
     <published>2018-10-21T04:16:07.943Z</published>
     <updated>2018-10-21T01:46:22.868Z</updated>
     
@@ -130,8 +157,8 @@
   
   <entry>
     <title>SVM沉思录2——SVM的拉格朗日函数表示以及其对偶问题</title>
-    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/SVM%E6%B2%89%E6%80%9D%E5%BD%952%E2%80%94%E2%80%94SVM%E7%9A%84%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%BB%A5%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98/"/>
-    <id>https://blog.csdn.net/LoseInVain/2018/10/21/SVM沉思录2——SVM的拉格朗日函数表示以及其对偶问题/</id>
+    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm2/"/>
+    <id>https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm2/</id>
     <published>2018-10-21T04:16:07.941Z</published>
     <updated>2018-10-21T01:39:07.511Z</updated>
     
@@ -157,8 +184,8 @@
   
   <entry>
     <title>SVM沉思录1——什么是支持向量机SVM</title>
-    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/SVM%E6%B2%89%E6%80%9D%E5%BD%951%E2%80%94%E2%80%94%E4%BB%80%E4%B9%88%E6%98%AF%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BASVM/"/>
-    <id>https://blog.csdn.net/LoseInVain/2018/10/21/SVM沉思录1——什么是支持向量机SVM/</id>
+    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm1/"/>
+    <id>https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm1/</id>
     <published>2018-10-21T04:16:07.940Z</published>
     <updated>2018-10-21T01:03:00.246Z</updated>
     
@@ -184,8 +211,8 @@
   
   <entry>
     <title>深度学习Debug沉思录</title>
-    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0debug%E6%B2%89%E6%80%9D%E5%BD%95/"/>
-    <id>https://blog.csdn.net/LoseInVain/2018/10/21/深度学习debug沉思录/</id>
+    <link href="https://blog.csdn.net/LoseInVain/2018/10/21/dl_debug_thinking/dl_debug/"/>
+    <id>https://blog.csdn.net/LoseInVain/2018/10/21/dl_debug_thinking/dl_debug/</id>
     <published>2018-10-21T04:02:57.352Z</published>
     <updated>2018-10-20T18:21:23.808Z</updated>
     

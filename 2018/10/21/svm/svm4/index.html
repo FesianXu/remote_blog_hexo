@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="机器学习,SVM,支持向量机,拉格朗日乘数法,KKT条件">
 
 
 
@@ -113,16 +113,18 @@
 
 
 
-<meta name="description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="机器学习杂货铺2号店">
-<meta property="og:url" content="https://blog.csdn.net/LoseInVain/categories/Machine-Learning/page/2/index.html">
+<meta name="description" content="前言在SVM的推导中，在得到了原问题的拉格朗日函数表达之后，是一个最小最大问题，通常会将其转化为原问题的对偶问题即是最大最小问题进行求解，我们这里简单介绍下最优化问题的对偶问题。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。注意，本文应用多限于SVM，因此会比较狭隘。如有谬误，请联系指正。转载请注明出处。联系方式：e-mail: FesianXu@1">
+<meta name="keywords" content="机器学习,SVM,支持向量机,拉格朗日乘数法,KKT条件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SVM沉思录4——最优化问题的对偶问题">
+<meta property="og:url" content="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm4/index.html">
 <meta property="og:site_name" content="机器学习杂货铺2号店">
-<meta property="og:description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
+<meta property="og:description" content="前言在SVM的推导中，在得到了原问题的拉格朗日函数表达之后，是一个最小最大问题，通常会将其转化为原问题的对偶问题即是最大最小问题进行求解，我们这里简单介绍下最优化问题的对偶问题。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。注意，本文应用多限于SVM，因此会比较狭隘。如有谬误，请联系指正。转载请注明出处。联系方式：e-mail: FesianXu@1">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-10-21T01:50:27.403Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="机器学习杂货铺2号店">
-<meta name="twitter:description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
+<meta name="twitter:title" content="SVM沉思录4——最优化问题的对偶问题">
+<meta name="twitter:description" content="前言在SVM的推导中，在得到了原问题的拉格朗日函数表达之后，是一个最小最大问题，通常会将其转化为原问题的对偶问题即是最大最小问题进行求解，我们这里简单介绍下最优化问题的对偶问题。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。注意，本文应用多限于SVM，因此会比较狭隘。如有谬误，请联系指正。转载请注明出处。联系方式：e-mail: FesianXu@1">
 
 
 
@@ -152,13 +154,13 @@
 
 
 
-  <link rel="canonical" href="https://blog.csdn.net/LoseInVain/categories/Machine-Learning/page/2/">
+  <link rel="canonical" href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm4/">
 
 
 
 
 
-  <title>Category: Machine Learning | 机器学习杂货铺2号店</title>
+  <title>SVM沉思录4——最优化问题的对偶问题 | 机器学习杂货铺2号店</title>
   
 
 
@@ -177,7 +179,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 	
 	<a href="https://github.com/FesianXu"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png" alt="Follow Me on GitHub"></a>
@@ -315,57 +317,374 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>Machine Learning<small>Category</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm4/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="徐飞翔(Fesian Xu)">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/site_imgs/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="机器学习杂货铺2号店">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/10/21/svm/svm1/" itemprop="url">
-              
-                <span itemprop="name">SVM沉思录1——什么是支持向量机SVM</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">SVM沉思录4——最优化问题的对偶问题</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-10-21T12:16:07+08:00" content="2018-10-21">
-          10-21
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-21T12:16:07+08:00">
+                2018-10-21
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/21/svm/svm4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/10/21/svm/svm4/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/21/svm/svm4/" class="leancloud_visitors" data-flag-title="SVM沉思录4——最优化问题的对偶问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font size="6"><b>前言</b></font><br><strong>在SVM的推导中，在得到了原问题的拉格朗日函数表达之后，是一个最小最大问题，通常会将其转化为原问题的对偶问题即是最大最小问题进行求解，我们这里简单介绍下最优化问题的对偶问题。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。注意，本文应用多限于SVM，因此会比较狭隘。</strong><br><strong>如有谬误，请联系指正。转载请注明出处。</strong><br><em>联系方式：</em><br><strong>e-mail</strong>: <a href="FesianXu@163.com"><code>FesianXu@163.com</code></a><br><strong>QQ</strong>: <code>973926198</code><br><strong>github</strong>: <a href="https://github.com/FesianXu" target="_blank" rel="noopener"><code>https://github.com/FesianXu</code></a><br><strong>有关代码开源</strong>: <a href="https://github.com/FesianXu/AI_Blog/tree/master/SVM相关" target="_blank" rel="noopener">click</a></p>
+<hr>
+<h1 id="最优化问题"><a href="#最优化问题" class="headerlink" title="最优化问题"></a>最优化问题</h1><p>最优化问题研究的是当函数（目标函数）在给定了一系列的约束条件下的最大值或最小值的问题，一般来说，一个最优化问题具有以下形式：</p>
+<script type="math/tex; mode=display">
+\min_{x \in R^n} f(x) \\
+s.t. 　　g_i(x) \leq 0 ,i=1,2,\cdots, N\\
+　　　   h_j(x) = 0, j=1,2,\cdots, M
+\tag{1.1}</script><p>最优化问题可以根据<strong>目标函数和约束条件的类型</strong>进行分类: </p>
+<ol>
+<li>如果目标函数和约束条件都为变量的线性函数, 称该最优化问题为<strong>线性规划</strong>;</li>
+<li>如果目标函数为变量的二次函数, 约束条件为变量的仿射函数, 称该最优化问题为<strong>二次规划</strong>; </li>
+<li>如果目标函数或者约束条件为变量的非线性函数, 称该最优化问题为<strong>非线性规划</strong>.</li>
+</ol>
+<hr>
+<h1 id="对偶问题"><a href="#对偶问题" class="headerlink" title="对偶问题"></a>对偶问题</h1><p>最优化问题存在对偶问题，所谓对偶问题，源于这个思想：</p>
+<blockquote>
+<p>原始问题比较难以求解，通过构建其对偶问题，期望解决这个对偶问题得到其原问题的下界（在<strong>弱对偶</strong>情况下，对于最小化问题来说），或者得到原问题的解（<strong>强对偶</strong>情况下）。</p>
+</blockquote>
+<p>在SVM中，因为其属于<strong>凸优化问题</strong>，因此是强对偶问题，可以通过构建对偶问题解决得到原问题的解。<br>我们举一个线性规划中一个经典问题，描述如下：</p>
+<blockquote>
+<p>某工厂有两种原料A、B，而且能用其生产两种产品：</p>
+<ol>
+<li>生产第一种产品需要2个A和4个B，能够获利6；</li>
+<li>生产第二种产品需要3个A和2个B，能够获利4；<br>此时共有100个A和120个B，问该工厂最多获利多少？</li>
+</ol>
+</blockquote>
+<p>可以简单得到其问题的数学表达式为：</p>
+<script type="math/tex; mode=display">
+\max_{x_1, x_2} 6x_1+4x_2 \\
+s.t.　　2x_1+3x_2 \leq 100 \\
+　　　4x_1+2x_2 \leq 120
+\tag{2.1}</script><p>当然，得到这个式子的根据就是最大化其卖出去的产品的利润。但是，如果只问收益的话，明显地，还可以考虑卖出原材料A和B的手段，前提就是卖出原材料的盈利会比生产商品盈利高，假设产品A和产品B的单价为$w_1$和$w_2$，从这个角度看，只要最小化购买原材料的价格，我们就可以得出另一个数学表达式：</p>
+<script type="math/tex; mode=display">
+\min_{w_1, w_2} {100w_1+120w_2} \\
+s.t.　　2w_1+4w_2  \geq 6 \\
+　　　  3w_1+2w_2 \geq 4
+\tag{2.2}</script><p><strong>其实，我们可以发现这其实是极大极小问题和其对偶问题，极小极大问题</strong>。</p>
+<hr>
+<h1 id="一些定义"><a href="#一些定义" class="headerlink" title="一些定义"></a>一些定义</h1><h2 id="原始问题"><a href="#原始问题" class="headerlink" title="原始问题"></a>原始问题</h2><p>我们要讨论原问题和对偶问题，就需要一些定义，我们给出原始问题的非拉格朗日函数表达形式如式子$(1.1)$所示，引进其广义拉格朗日函数（详见文章<a href="http://blog.csdn.net/loseinvain/article/details/78624888">《拉格朗日乘数法和KKT条件的直观解释》</a>）：</p>
+<script type="math/tex; mode=display">
+L(x, \alpha, \beta)_{x \in R^n} = f(x)+\sum_{i=1}^N \alpha_i g_i(x)+\sum_{j=1}^M \beta_j h_j(x)
+\tag{3.1}</script><p>其中$x=(x^{(1)}, x^{(2)}, \cdots, x^{(n)})^T \in R^n$，而$\alpha_i$和$\beta_j$是拉格朗日乘子，其中由<strong>KKT条件</strong>有$\alpha_i \geq 0$，考虑关于x的函数：</p>
+<script type="math/tex; mode=display">
+\theta_P(x) = \max_{\alpha, \beta; \alpha_i \geq 0} L(x, \alpha, \beta)
+\tag{3.2}</script><p>这里下标$P$用以表示这个是原始问题。<br>联想到我们在文章<a href="http://blog.csdn.net/loseinvain/article/details/78636285">《SVM的拉格朗日函数表示以及其对偶问题》</a>中一些关于对偶问题的讨论，我们知道其实$(3.2)$中的$\theta_P(x)$其实就表示了$(1.1)$中的原问题的目标函数和其约束条件，这里再探讨一下：<br><strong>假设我们存在一个x，使得x违反原始问题的约束条件，从而有$g_i(x) &gt; 0$或者$h_j(x) \neq 0$，那么我们可以推论出：</strong></p>
+<script type="math/tex; mode=display">
+\theta_P(x) = \max_{\alpha, \beta; \alpha_i \geq 0} [f(x)+\sum_{i=1}^N \alpha_i g_i(x)+ \sum_{j=1}^M \beta_j h_j(x)] = + \infty
+\tag{3.3}</script><p>为什么呢？<strong>因为若存在某个i使得$g_i(x) &gt; 0$， 那么就可以令$\alpha_i \rightarrow +\infty$使得$\theta_P(x$)取得无穷大这个“最大值”；同样的，若存在一个j使得$h_j(x) \neq 0$， 那么就总是可以使得$\beta_j$让$\beta_j h_j(x) \rightarrow +\infty$， 而其他各个$\alpha_i$和$\beta_j$均取为0（满足约束条件的拉格朗日乘子取为0）。这样，只有对于满足约束条件的i和j，才会有$\theta_P(x)=f(x)$成立。</strong>于是我们有这个分段表达式：</p>
+<script type="math/tex; mode=display">
+\theta_P(x) =
+\begin{cases}
+f(x) & x满足原始问题约束 \\
++ \infty & 其他
+\end{cases}
+\tag{3.4}</script><p>所以，如果是最小化问题，我们有极小极大问题$(3.5)$:</p>
+<script type="math/tex; mode=display">
+\min_{x} \theta_P(x) = \min_{x} \max_{\alpha, \beta; \alpha_i \geq 0} L(x, \alpha, \beta)
+\tag{3.5}</script><p><strong>其与式子$(1.1)$是完全等价的，有着同样的解</strong>。这样一来，我们就把原始的最优化问题转换为了广义拉格朗日函数的极小极大问题，为了后续讨论方便，我们记：</p>
+<script type="math/tex; mode=display">
+p^* = \min_{x} \theta_P(x)
+\tag{3.6}</script><p>其中$p^*$为问题的解。</p>
+<h2 id="极小极大问题的对偶，-极大极小问题"><a href="#极小极大问题的对偶，-极大极小问题" class="headerlink" title="极小极大问题的对偶， 极大极小问题"></a>极小极大问题的对偶， 极大极小问题</h2><p>我们定义：</p>
+<script type="math/tex; mode=display">
+\theta_{D} (\alpha, \beta) = \min_{x} L(x, \alpha, \beta)
+\tag{3.7}</script><p>在考虑极大化$(3.7)$有：</p>
+<script type="math/tex; mode=display">
+\max_{\alpha, \beta; \alpha_i \geq 0} \theta_D(\alpha, \beta)=\max_{\alpha, \beta; \alpha_i \geq 0} \min_{x} L(x, \alpha, \beta)
+\tag{3.8}</script><p>式子$(3.8)$称为广义拉格朗日函数的极大极小问题，将其变成约束形式，为：</p>
+<script type="math/tex; mode=display">
+\max_{\alpha, \beta} \theta_D(\alpha, \beta)=\max_{\alpha, \beta} \min_{x} L(x, \alpha, \beta) \\
+s.t. 　　\alpha_i \geq 0
+\tag{3.9}</script><p>式子$(3.9)$被称为原问题的对偶问题，定义其最优解为：</p>
+<script type="math/tex; mode=display">
+d^* = \max_{\alpha, \beta} \theta_D(\alpha, \beta)
+\tag{3.10}</script><p>实际上，通过这种方法我们可以将式子$(2.1)$转化为式子$(2.2)$，也就是将原问题转化为对偶问题，有兴趣的朋友可以自行尝试。</p>
+<hr>
+<h1 id="原始问题和对偶问题的关系"><a href="#原始问题和对偶问题的关系" class="headerlink" title="原始问题和对偶问题的关系"></a>原始问题和对偶问题的关系</h1><p>正如前面所谈到的，原始问题的解和对偶问题的解存在一定的关系，对于任意的$\alpha, x, \beta$，我们有：</p>
+<script type="math/tex; mode=display">
+\theta_D(\alpha, \beta)=\min_{x} L(x, \alpha, \beta) \leq L(x, \alpha, \beta) \leq 
+\max_{\alpha, \beta; \alpha_i \geq 0} L(x, \alpha, \beta)=\theta_P(x)
+\tag{4.1}</script><p>等价于：</p>
+<script type="math/tex; mode=display">
+\theta_D(\alpha, \beta) \leq \theta_P(x)
+\tag{4.2}</script><p>注意，式子$(4.2)$对于所有的$x, \alpha, \beta$都成立，因为原始问题和对偶问题均有最优解，所以有：</p>
+<script type="math/tex; mode=display">
+\max_{\alpha, \beta; \alpha_i \geq 0} \theta_D(\alpha, \beta) \leq \min_{x} \theta_P(x)
+\tag{4.3}</script><p>容易得到：</p>
+<script type="math/tex; mode=display">
+d^* = \max_{\alpha, \beta; \alpha_i \geq 0} \min_{x} L(x, \alpha, \beta) \leq \min_{x} \max_{\alpha, \beta; \alpha_i \geq 0} L(x, \alpha, \beta) = p^*
+\tag{4.4}</script><p>由此我们得到了在最小化问题中$d^* \leq p^*$的结论，这个称为<strong>弱对偶</strong>。<strong>弱对偶指出，解决最小化问题的对偶问题可以得到原问题的解的下界</strong>。</p>
+<p>既然有弱对偶就会存在<strong>强对偶</strong>。强对偶指的是$d^*=p^*$的情况，在某些情况下，原始问题和对偶问题的解相同，这时可以用解决对偶问题来代替原始问题，下面以定理的方式给出强对偶成立的重要条件而不予以证明：</p>
+<blockquote>
+<p>考虑原始问题$(1.1)$和对偶问题$(3.9)$，假设$f(x)$和$g_i(x)$都是凸函数， $h_j(x)$是仿射函数，并且不等式约束$g_i(x)$是严格可行的，既存在$x$，对所有$i$有$g_i(x) &lt; 0 $，则存在$x^*,\alpha^*,\beta^*$，使得$x^*$是原始问题的解，$\alpha^*,\beta^*$是对偶问题的解（满足这个条件的充分必要条件就是$x^*, \alpha^*, \beta^*$满足KKT条件<sup><a href="#fn_1" id="reffn_1">1</a></sup>），并且：<br>$p^* = d^* = L(x^*, \alpha^*, \beta^*)$</p>
+</blockquote>
+<hr>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><ol>
+<li><a href="http://blog.csdn.net/qq_34531825/article/details/52872819">最优化问题学习笔记1-对偶理论 CSDN</a></li>
+<li><a href="https://book.douban.com/subject/10590856/" target="_blank" rel="noopener">《统计学习方法》 豆瓣</a></li>
+<li><a href="https://www.zhihu.com/question/27057384" target="_blank" rel="noopener">如何理解对偶问题？ feng liu的回答</a></li>
+<li><a href="http://blog.csdn.net/loseinvain/article/details/78624888">《拉格朗日乘数法和KKT条件的直观解释》 CSDN</a></li>
+<li><a href="http://blog.csdn.net/loseinvain/article/details/78636285">SVM的拉格朗日函数表示以及其对偶问题 CSDN</a></li>
+</ol>
+<blockquote id="fn_1">
+<sup>1</sup>. 见<a href="http://blog.csdn.net/loseinvain/article/details/78624888">《拉格朗日乘数法和KKT条件的直观解释》</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/site_imgs/wechat.png" alt="徐飞翔(Fesian Xu) WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/site_imgs/alipay.jpg" alt="徐飞翔(Fesian Xu) Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+	
+	<div>
+    
+    <div>
+    
+        <div style="text-align:center;color: #4B0082;font-size:18px;">
+            -------------The End
+            <i class="fa fa-paw"></i>
+            Thanks For Your Reading-------------
+        </div>
+    
+</div>
+
+    
+    </div>
+	
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          
+            <a href="/tags/SVM/" rel="tag"><i class="fa fa-tag"></i> SVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/21/svm/svm3/" rel="next" title="SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释">
+                <i class="fa fa-chevron-left"></i> SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/21/svm/svm5/" rel="prev" title="SVM沉思录5——软间隔线性支持向量机">
+                SVM沉思录5——软间隔线性支持向量机 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/categories/Machine-Learning/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/categories/Machine-Learning/">1</a><span class="page-number current">2</span>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+
+</script>
+
+
+
+      
+    </div>
+  </div>
 
 
           </div>
@@ -373,6 +692,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
 
         </div>
         
@@ -393,8 +723,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -513,6 +852,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#最优化问题"><span class="nav-number">1.</span> <span class="nav-text">最优化问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对偶问题"><span class="nav-number">2.</span> <span class="nav-text">对偶问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些定义"><span class="nav-number">3.</span> <span class="nav-text">一些定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原始问题"><span class="nav-number">3.1.</span> <span class="nav-text">原始问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#极小极大问题的对偶，-极大极小问题"><span class="nav-number">3.2.</span> <span class="nav-text">极小极大问题的对偶， 极大极小问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原始问题和对偶问题的关系"><span class="nav-number">4.</span> <span class="nav-text">原始问题和对偶问题的关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">5.</span> <span class="nav-text">引用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -668,6 +1023,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -719,6 +1078,30 @@
       </style>
     
 
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'FesianXu',
+            repo: 'git@github.com:FesianXu/FesianXu.github.io.git',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '46843ce9ee419af7135c0bceaf4be257522c4761',
+            
+                client_id: 'b1c4e5e986f1c6e8b418'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
     
 
 
