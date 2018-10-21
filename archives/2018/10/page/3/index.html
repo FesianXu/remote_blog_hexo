@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="机器学习,SVM,支持向量机">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -113,25 +113,16 @@
 
 
 
-<meta name="description" content="前言支持向量机是常用的，泛化性能佳的，而且可以应用核技巧的机器学习算法，在深度学习流行前是最被广泛使用的机器学习算法之一，就算是深度学习流行的现在，支持向量机也由于其高性能，较低的计算复杂度而被人们广泛应用。这里结合李航博士的《统计学习方法》一书的推导和林轩田老师在《机器学习技法》中的讲解，谈谈自己的认识。如有谬误，请联系指正。转载请注明出处。联系方式：e-mail: FesianXu@163.c">
-<meta name="keywords" content="机器学习,SVM,支持向量机">
-<meta property="og:type" content="article">
-<meta property="og:title" content="SVM沉思录1——什么是支持向量机SVM">
-<meta property="og:url" content="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm1/index.html">
+<meta name="description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="机器学习杂货铺2号店">
+<meta property="og:url" content="https://blog.csdn.net/LoseInVain/archives/2018/10/page/3/index.html">
 <meta property="og:site_name" content="机器学习杂货铺2号店">
-<meta property="og:description" content="前言支持向量机是常用的，泛化性能佳的，而且可以应用核技巧的机器学习算法，在深度学习流行前是最被广泛使用的机器学习算法之一，就算是深度学习流行的现在，支持向量机也由于其高性能，较低的计算复杂度而被人们广泛应用。这里结合李航博士的《统计学习方法》一书的推导和林轩田老师在《机器学习技法》中的讲解，谈谈自己的认识。如有谬误，请联系指正。转载请注明出处。联系方式：e-mail: FesianXu@163.c">
+<meta property="og:description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://blog.csdn.net/imgs/svm/best_divide.png">
-<meta property="og:image" content="https://blog.csdn.net/imgs/svm/noise.png">
-<meta property="og:image" content="https://blog.csdn.net/imgs/svm/overfit.png">
-<meta property="og:image" content="https://blog.csdn.net/imgs/svm/svm_divide.png">
-<meta property="og:image" content="https://blog.csdn.net/imgs/svm/margin.png">
-<meta property="og:image" content="https://blog.csdn.net/imgs/svm/svm_margin_2.png">
-<meta property="og:updated_time" content="2018-10-21T01:03:00.246Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SVM沉思录1——什么是支持向量机SVM">
-<meta name="twitter:description" content="前言支持向量机是常用的，泛化性能佳的，而且可以应用核技巧的机器学习算法，在深度学习流行前是最被广泛使用的机器学习算法之一，就算是深度学习流行的现在，支持向量机也由于其高性能，较低的计算复杂度而被人们广泛应用。这里结合李航博士的《统计学习方法》一书的推导和林轩田老师在《机器学习技法》中的讲解，谈谈自己的认识。如有谬误，请联系指正。转载请注明出处。联系方式：e-mail: FesianXu@163.c">
-<meta name="twitter:image" content="https://blog.csdn.net/imgs/svm/best_divide.png">
+<meta name="twitter:title" content="机器学习杂货铺2号店">
+<meta name="twitter:description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
 
 
 
@@ -161,13 +152,13 @@
 
 
 
-  <link rel="canonical" href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm1/">
+  <link rel="canonical" href="https://blog.csdn.net/LoseInVain/archives/2018/10/page/3/">
 
 
 
 
 
-  <title>SVM沉思录1——什么是支持向量机SVM | 机器学习杂货铺2号店</title>
+  <title>Archive | 机器学习杂货铺2号店</title>
   
 
 
@@ -186,7 +177,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-archive">
     <div class="headband"></div>
 	
 	<a href="https://github.com/FesianXu"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png" alt="Follow Me on GitHub"></a>
@@ -324,322 +315,111 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block archive">
+    <div id="posts" class="posts-collapse">
+      <span class="archive-move-on"></span>
 
-  
+      <span class="archive-page-counter">
+        
+        
+        
+          
+        
+        Um..! 12 posts in total. Keep on posting.
+      </span>
 
-  
-  
-  
+      
+
+        
+        
+        
+
+        
+          
+          <div class="collection-title">
+            <h1 class="archive-year" id="archive-year-2018">2018</h1>
+          </div>
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm1/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="徐飞翔(Fesian Xu)">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/site_imgs/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="机器学习杂货铺2号店">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2018/10/21/svm/svm1/" itemprop="url">
+              
+                <span itemprop="name">SVM沉思录1——什么是支持向量机SVM</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">SVM沉思录1——什么是支持向量机SVM</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-21T12:16:07+08:00">
-                2018-10-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Machine Learning</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/10/21/svm/svm1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/10/21/svm/svm1/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/10/21/svm/svm1/" class="leancloud_visitors" data-flag-title="SVM沉思录1——什么是支持向量机SVM">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Visitors&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p><font size="6"><b>前言</b></font><br><strong>支持向量机是常用的，泛化性能佳的，而且可以应用核技巧的机器学习算法，在深度学习流行前是最被广泛使用的机器学习算法之一，就算是深度学习流行的现在，支持向量机也由于其高性能，较低的计算复杂度而被人们广泛应用。这里结合李航博士的《统计学习方法》一书的推导和林轩田老师在《机器学习技法》中的讲解，谈谈自己的认识。</strong><br><strong>如有谬误，请联系指正。转载请注明出处。</strong><br><em>联系方式：</em><br><strong>e-mail</strong>: <code>FesianXu@163.com</code><br><strong>QQ</strong>: <code>973926198</code><br><strong>github</strong>: <code>https://github.com/FesianXu</code><br><strong>有关代码开源</strong>: <a href="https://github.com/FesianXu/AI_Blog/tree/master/SVM%E7%9B%B8%E5%85%B3" target="_blank" rel="noopener">click</a></p>
-<hr>
-<h1 id="SVM的起源"><a href="#SVM的起源" class="headerlink" title="SVM的起源"></a>SVM的起源</h1><p>　　<strong>支持向量机(Support Vector Machine, SVM)</strong>是一种被广泛使用的机器学习算法，自从被Vapnik等人提出来之后便被广泛使用和发展。传统的支持向量机一般是<strong>二类分类器</strong>，其基本出发点很简单，就是<strong>找到一个策略，能够让线性分类器的分类超平面能够最大程度的把两类的样本最好地分割开</strong>，这里我们讨论下什么叫做<strong>最好地分割开</strong>，和<strong>实现这个对整个分类器的意义。</strong></p>
-<h2 id="最好地分割数据"><a href="#最好地分割数据" class="headerlink" title="最好地分割数据"></a>最好地分割数据</h2><p>　　在进行接下来的讨论之前，为了简化我们的讨论从而直面问题所在，我们进行以下假设：</p>
-<blockquote>
-<p>1） 我们现在的两类数据是线性可分的， 也就是总是存在一个超平面$W^TX+b$可以将数据完美的分开。<br>2） 我们的数据维度是二维的，也就是特征维只有两个，类标签用+1， -1表示，这样方便我们绘制图像。</p>
-</blockquote>
-<p>　　我在前篇博文<a href="http://blog.csdn.net/LoseInVain/article/details/78430585">《机器学习系列之 感知器模型》</a>中已经介绍到了感知器这一简单的线性分类器。感知器很原始，只能对线性可分的数据进行准确分割，而且由于其激活函数选用的是阶跃函数，因此不能通过梯度的方法进行参数更新，而是只能采用<strong>错误驱动的策略</strong>进行参数更新，这样我们的超平面其实是<strong>不确定的</strong>，因为其取决于具体随机到的是哪个样本点进行更新，这是一个不稳定的结果。而且，由于采用了这种参数更新策略，感知器的超平面即使是能够将线性数据完美地分割开，也经常会出现超平面非常接近某一个类的样本，而偏离另一个类的样本的这种情况，特别是在真实情况下的数据是叠加了噪声的情况下。<br>　　如下图所示，其中绿线是感知器的运行结果，因为其算法的不稳定性，所以每次的结果都可能不同，选中的这一次我们可以看出来虽然绿线<strong>将两类数据完美地分割开了，但是和蓝色样本很接近，如果新来的测试样本叠加一个噪声，这个超平面就很容易将它分类错误，而最佳分类面粉色线则对噪声有着更好地容忍。</strong><br><img src="/imgs/svm/best_divide.png" alt="best_divide"></p>
-<h2 id="样本噪声"><a href="#样本噪声" class="headerlink" title="样本噪声"></a>样本噪声</h2><p>　　刚才我们谈到了样本集上叠加的<strong>噪声</strong>，噪声广泛存在于真实数据集中，无法避免，因此我们的分类超平面要能够对噪声进行一定的容忍。一般我们假设噪声为高斯噪声，如下图所示：<br><img src="/imgs/svm/noise.png" alt="noise"><br>　　其中红点为实际的采样到的样本位置$P_{sample}$，而蓝点是可能的样本的实际位置$P_{actual}$，因为噪声$N$的叠加才使得其偏离到了红点位置，其中蓝点的位置满足高斯分布。</p>
-<script type="math/tex; mode=display">
-P_{sample} = P_{actual}+N, N \sim N(\mu, \sigma^2)
-\tag{1.1}</script><h2 id="最佳分类超平面"><a href="#最佳分类超平面" class="headerlink" title="最佳分类超平面"></a>最佳分类超平面</h2><p>　　也就是说我们根据$P_{sample}$点训练出来的感知器的分类器超平面很可能会出现可以完美地划分$P_{sample}$点，但是却不能正确地划分对新来的测试样本的现象。因为新来的样本很可能位于蓝色的样本点的位置，也就是表现出了严重的过拟合现象， 而我们的支持向量机的机制可以很好地减免这种现象，具有更好的泛化能力。我们用几张图来表述下导致这种过拟合的原因：<br><img src="/imgs/svm/overfit.png" alt="overfit"><br>Figure 1, 感知器分类超平面能将线性可分的样本完美分割，但是由于样本叠加了高斯噪声$N$，所以当测试样本的数据出现在超平面“穿过”的“绿圈”之内时，就可能会出现错分的情况，这就是<strong>过拟合</strong>的一种表现。<br><img src="/imgs/svm/svm_divide.png" alt="svm_divide"><br>Figure 2,假设我们的样本集都是独立同分布采样的，那么其叠加的高斯噪声$N$应该都是相同分布$N \sim N(\mu, \sigma^2)$的，因此这个绿圈的大小应该都是相同的，因此最佳的分类超平面应该是可以和距离它最接近的若干个样本的边界相切的。我们把最接近超平面的若干个样本点称为<strong>支持向量</strong>，支持向量和超平面的距离越远，相当于我们可以容忍的噪声的高斯分布的方差越小，泛化性能越好。<strong>注意，这里的高斯分布的方差是我们假设的，不一定是实际数据集叠加的高斯噪声分布的方差，但是假设的越大，总是能带来更好的泛化能力。</strong></p>
-<hr>
-<h1 id="SVM提出"><a href="#SVM提出" class="headerlink" title="SVM提出"></a>SVM提出</h1><p>　　我们在上面谈到了最佳分类超平面应能够使得支持向量距离超平面的距离最大，这个就是<strong>支持向量机</strong>的基本机制的最优化的目标，我们需要解决这个问题就必须要先数学形式化我们这个目的，只有这样才能进行最优化和求解。</p>
-<h2 id="数学形式化表述"><a href="#数学形式化表述" class="headerlink" title="数学形式化表述"></a>数学形式化表述</h2><p>　　我们这里对SVM问题进行数学上的形式化表述，以便于求解，这里主要讨论SVM的原问题，实际上，SVM通常转化为对偶问题进行求解，我们将在下一篇文章里讨论SVM的对偶问题。</p>
-<h2 id="函数间隔和几何间隔"><a href="#函数间隔和几何间隔" class="headerlink" title="函数间隔和几何间隔"></a>函数间隔和几何间隔</h2><p>　　我们刚才的表述中，我们知道了SVM的关键就是：<strong>使得支持向量距离分类超平面的距离之和最小</strong>，这里涉及到了“距离”这个概念，因此我们就必须要定义这个“距离”。这个距离可以定义为<strong>函数间隔(functional margin)</strong>和<strong>几何间隔(geometric margin)</strong>。我们分别来观察下这两个间隔。</p>
-<h3 id="函数间隔"><a href="#函数间隔" class="headerlink" title="函数间隔"></a>函数间隔</h3><p>　　我们表征一个样本点$x_i$到达一个超平面$\theta(x)=W^Tx+b$的距离，直接可以表述为:</p>
-<script type="math/tex; mode=display">
-\gamma_i = y_i\theta(x_i) = y_i(W^Tx_i+b), \ x_i \in R^n
-\tag{2.1}</script><p>　　其中$y_i$为正确的标签，为$+1$或$-1$，乘上$y_i$的目的是当$x_i$分类正确的时候$\gamma_i$为正，而当分类错误的时候，$\gamma_i$为负，负数的最大值不超过0，所以也就不存在最大间隔了。整个式子也很好理解，当$x_i$使得$\theta(x)=0$时，该样本点就处于超平面上，当$x_i$使得$\theta(x)$大于0时，该样本点处于超平面之外，该值越大离超平面就越远。<br><img src="/imgs/svm/margin.png" alt="margin"></p>
-<h3 id="几何间隔"><a href="#几何间隔" class="headerlink" title="几何间隔"></a>几何间隔</h3><p>　　函数间隔可以在一定程度上表征距离，但是存在一个问题，就是在$W$和$b$同时增大一个相同的倍数$\alpha$时，变成$\theta(x)=\alpha W^Tx+\alpha b$时，因为当$\alpha \neq 0$时，其零点还是相同的，所以表示的还是相同的超平面。但是我们从函数间隔的定义中可以看出，如果两者都放大$\alpha$倍，那么其函数间隔也被放大了$\alpha$倍，这个就不符合我们的需求了，我们希望的是<strong>只要是相同的一个样本点和一个固定的超平面，那么它们之间的距离应该是一定的，这个也是符合我们直观的</strong>。因此我们将函数间隔标准化，定义了几何间隔：</p>
-<script type="math/tex; mode=display">
-\hat{\gamma_i} = \frac{y_i(W^Tx_i+b)}{||W||_{L2}}
-\tag{2.2}</script><p>　　$||W||_{L2}$是L2范式，由于这个标准化因子的作用，使得$\hat{\gamma_i}$的值不会随着放大因子$\alpha$的变化而变化了。很容易看出：</p>
-<script type="math/tex; mode=display">
-\gamma_i = \hat{\gamma_i}||W||_{L2}
-\tag{2.3}</script><h2 id="最大化最小距离"><a href="#最大化最小距离" class="headerlink" title="最大化最小距离"></a>最大化最小距离</h2><p>　　定义了几何间隔和函数间隔之后，我们就需要最大化最小距离了，这个听起来挺绕口的，其实意思很简单，就是求得一组$W$和$b$的情况下的最小样本距离，然后在不同的$W$和$b$的情况下最大化这个最小样本距离，最后得出的结果就是能够使得支持向量到超平面的距离最大的超平面了。我们观察下公式可能会更直观一些：</p>
-<script type="math/tex; mode=display">
-\gamma = \min_{N=1,\cdots,N} \gamma_i, \ i=1,\cdots,N
-\tag{2.4}</script><script type="math/tex; mode=display">
-\hat{\gamma} = \min_{N=1,\cdots,N} \hat{\gamma_i}, \ i=1,\cdots,N
-\tag{2.5}</script><p>这个就是最小几何间隔距离，我们现在最大化它，有：</p>
-<script type="math/tex; mode=display">
-\max_{W,b} \hat{\gamma}
-\tag{2.6}</script><p>将两者写在一起，可以表述为：</p>
-<script type="math/tex; mode=display">
-\max_{W,b} \hat{\gamma} \\
-s.t. \ \frac{y_i(W^Tx_i+b)}{ \Vert W \Vert} \geq \hat{\gamma}, \ i=1,\cdots,N
-\tag{2.7}</script><p>容易看出其中的$\frac{y_i(W^Tx_i+b)}{ \Vert W  \Vert} \geq \hat{\gamma},  i=1,\cdots,N$</p>
-<p>其实是和约束条件$\hat{\gamma} = \min_{N=1,\cdots,N} \hat{\gamma_i},  i=1,\cdots,N$等价的。我们做一些恒等变换有:</p>
-<script type="math/tex; mode=display">
-\max_{W,b} \frac{\gamma}{ \Vert W  \Vert} \\
-s.t. \ y_i(W^Tx_i+b) \geq \gamma, \ i=1,\cdots,N
-\tag{2.8}</script><p>　　这里我们要想一下：$\gamma$的具体取值会不会影响到最优化后的$W$和$b$的取值呢？答案是不会的，因为我们只要令<strong>所有支持向量，也就是距离超平面最近的若干个样本点到超平面的距离为单位量，比如为1即可，这个可以通过等比例调整$W$和$b$容易地做到，其他样本也会随着进行相应的缩放。这样对整个超平面的最优化点是没有任何影响的。</strong>所以我们现在将$\gamma$设为常数1。现在有：</p>
-<script type="math/tex; mode=display">
-\max_{W,b} \frac{1}{ \Vert W \Vert} \\
-s.t. \ y_i(W^Tx_i+b) \geq 1, \ i=1,\cdots,N
-\tag{2.9}</script><p>此时最大化问题转化为最小化问题：</p>
-<script type="math/tex; mode=display">
-\min_{W,b} \frac{1}{2} \Vert W \Vert^2 \\
-s.t. 1-y_i(W^Tx_i+b) \leq 0, \ i=1,\cdots,N
-\tag{2.10}</script><p>至此，我们得到了SVM的标准原问题表达。注意到这个式子里的$1-y_i(W^Tx_i+b) \leq 0,$，当存在$x_i$使得$1-y_i(W^Tx_i+b) = 0$时，这个$x_i$就被称之为<strong>支持向量</strong>。如下图的虚线上的红色样本和蓝色样本所示，虽然样本有很多个，但是有效的，决定超平面的样本，也就是<strong>支持向量</strong>一共就只有五个，其到决策面的距离被标准化为了1。<br><img src="/imgs/svm/svm_margin_2.png" alt="svm_margin"></p>
-<p><strong>我们接下来将会讨论SVM原问题拉格朗日函数形式以及其对偶问题，以便于更好地解决这个最优化问题。</strong></p>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>Donate</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/site_imgs/wechat.png" alt="徐飞翔(Fesian Xu) WeChat Pay">
-        <p>WeChat Pay</p>
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2018-10-21T12:16:07+08:00" content="2018-10-21">
+          10-21
+        </time>
       </div>
-    
 
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/site_imgs/alipay.jpg" alt="徐飞翔(Fesian Xu) Alipay">
-        <p>Alipay</p>
-      </div>
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-	
-	<div>
-    
-    <div>
-    
-        <div style="text-align:center;color: #4B0082;font-size:18px;">
-            -------------The End
-            <i class="fa fa-paw"></i>
-            Thanks For Your Reading-------------
-        </div>
-    
-</div>
-
-    
-    </div>
-	
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
-          
-            <a href="/tags/SVM/" rel="tag"><i class="fa fa-tag"></i> SVM</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/10/21/dl_debug_thinking/dl_debug/" rel="next" title="深度学习Debug沉思录">
-                <i class="fa fa-chevron-left"></i> 深度学习Debug沉思录
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/10/21/svm/svm2/" rel="prev" title="SVM沉思录2——SVM的拉格朗日函数表示以及其对偶问题">
-                SVM沉思录2——SVM的拉格朗日函数表示以及其对偶问题 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
 
-    <div class="post-spread">
       
+
         
-  <script>
-    window._bd_share_config = {
-      "common": {
-        "bdText": "",
-        "bdMini": "1",
-        "bdMiniList": false,
-        "bdPic": ""
-      },
-      "image": {
-        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
-        "viewText": "分享到：",
-        "viewSize": "16"
-      },
-      "slide": {
-        "bdImg": "5",
-        "bdPos": "left",
-        "bdTop": "100"
-      }
-    }
-  </script>
+        
+        
 
-<script>
-  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        
+        
 
-</script>
+        
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2018/10/21/dl_debug_thinking/dl_debug/" itemprop="url">
+              
+                <span itemprop="name">深度学习Debug沉思录</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2018-10-21T12:02:57+08:00" content="2018-10-21">
+          10-21
+        </time>
+      </div>
+
+    </header>
+  </article>
 
 
 
       
+
     </div>
   </div>
+  
+  
+  
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/archives/2018/10/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/2018/10/">1</a><a class="page-number" href="/archives/2018/10/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
+
+
 
 
           </div>
@@ -647,17 +427,6 @@ s.t. 1-y_i(W^Tx_i+b) \leq 0, \ i=1,\cdots,N
 
 
           
-
-  
-    <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
-    </div>
-
-  
-
-
 
         </div>
         
@@ -678,17 +447,8 @@ s.t. 1-y_i(W^Tx_i+b) \leq 0, \ i=1,\cdots,N
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -807,22 +567,6 @@ s.t. 1-y_i(W^Tx_i+b) \leq 0, \ i=1,\cdots,N
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SVM的起源"><span class="nav-number">1.</span> <span class="nav-text">SVM的起源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#最好地分割数据"><span class="nav-number">1.1.</span> <span class="nav-text">最好地分割数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样本噪声"><span class="nav-number">1.2.</span> <span class="nav-text">样本噪声</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最佳分类超平面"><span class="nav-number">1.3.</span> <span class="nav-text">最佳分类超平面</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SVM提出"><span class="nav-number">2.</span> <span class="nav-text">SVM提出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数学形式化表述"><span class="nav-number">2.1.</span> <span class="nav-text">数学形式化表述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数间隔和几何间隔"><span class="nav-number">2.2.</span> <span class="nav-text">函数间隔和几何间隔</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数间隔"><span class="nav-number">2.2.1.</span> <span class="nav-text">函数间隔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#几何间隔"><span class="nav-number">2.2.2.</span> <span class="nav-text">几何间隔</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最大化最小距离"><span class="nav-number">2.3.</span> <span class="nav-text">最大化最小距离</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -978,10 +722,6 @@ s.t. 1-y_i(W^Tx_i+b) \leq 0, \ i=1,\cdots,N
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
@@ -1033,30 +773,6 @@ s.t. 1-y_i(W^Tx_i+b) \leq 0, \ i=1,\cdots,N
       </style>
     
 
-    
-      <script type="text/javascript">
-      function renderGitment(){
-        var gitment = new Gitmint({
-            id: window.location.pathname, 
-            owner: 'FesianXu',
-            repo: 'git@github.com:FesianXu/FesianXu.github.io.git',
-            
-            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-            
-            oauth: {
-            
-            
-                client_secret: '46843ce9ee419af7135c0bceaf4be257522c4761',
-            
-                client_id: 'b1c4e5e986f1c6e8b418'
-            }});
-        gitment.render('gitment-container');
-      }
-
-      
-      renderGitment();
-      
-      </script>
     
 
 

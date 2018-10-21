@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="机器学习,SVM,支持向量机,核技巧,再生核希尔伯特空间,维度映射">
+  <meta name="keywords" content="TensorFlow,深度学习,张量输入">
 
 
 
@@ -113,22 +113,18 @@
 
 
 
-<meta name="description" content="前言   我们在前文[1-5]中介绍了线性支持向量机的原理和推导，涉及到了软和硬的线性支持向量机，还有相关的广义拉格朗日乘数法和KKT条件等。然而，光靠着前面介绍的这些内容，只能够对近似于线性可分的数据进行分割，而不能对非线性的数据进行处理，这里我们简单介绍下支持向量机中使用的核技巧，使用了核技巧的支持向量机就具备了分割非线性数据的能力。本篇可能是我们这个系列的最后一篇了，如果有机会我们在SMO中">
-<meta name="keywords" content="机器学习,SVM,支持向量机,核技巧,再生核希尔伯特空间,维度映射">
+<meta name="description" content="前言tf.group()用于创造一个操作，可以将传入参数的所有操作进行分组。API手册如:1234tf.group(    *inputs,    **kwargs) ops = tf.group(tensor1, tensor2,...)其中*inputs是0个或者多个用于组合tensor，一旦ops完成了，那么传入的tensor1,tensor2,...等等都会完成了，经常用于组合一些训练节点">
+<meta name="keywords" content="TensorFlow,深度学习,张量输入">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SVM沉思录6——支持向量机中的核技巧那些事儿">
-<meta property="og:url" content="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm6/index.html">
+<meta property="og:title" content="tf.group()用于组合多个操作">
+<meta property="og:url" content="https://blog.csdn.net/LoseInVain/2018/10/21/tensorflow/tf_group/index.html">
 <meta property="og:site_name" content="机器学习杂货铺2号店">
-<meta property="og:description" content="前言   我们在前文[1-5]中介绍了线性支持向量机的原理和推导，涉及到了软和硬的线性支持向量机，还有相关的广义拉格朗日乘数法和KKT条件等。然而，光靠着前面介绍的这些内容，只能够对近似于线性可分的数据进行分割，而不能对非线性的数据进行处理，这里我们简单介绍下支持向量机中使用的核技巧，使用了核技巧的支持向量机就具备了分割非线性数据的能力。本篇可能是我们这个系列的最后一篇了，如果有机会我们在SMO中">
+<meta property="og:description" content="前言tf.group()用于创造一个操作，可以将传入参数的所有操作进行分组。API手册如:1234tf.group(    *inputs,    **kwargs) ops = tf.group(tensor1, tensor2,...)其中*inputs是0个或者多个用于组合tensor，一旦ops完成了，那么传入的tensor1,tensor2,...等等都会完成了，经常用于组合一些训练节点">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://blog.csdn.net/imgs/svm/raw_feature.png">
-<meta property="og:image" content="https://blog.csdn.net/imgs/svm/projected_feature.png">
-<meta property="og:image" content="https://blog.csdn.net/imgs/svm/recover.png">
-<meta property="og:updated_time" content="2018-10-21T02:12:10.976Z">
+<meta property="og:updated_time" content="2018-10-21T13:24:25.326Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SVM沉思录6——支持向量机中的核技巧那些事儿">
-<meta name="twitter:description" content="前言   我们在前文[1-5]中介绍了线性支持向量机的原理和推导，涉及到了软和硬的线性支持向量机，还有相关的广义拉格朗日乘数法和KKT条件等。然而，光靠着前面介绍的这些内容，只能够对近似于线性可分的数据进行分割，而不能对非线性的数据进行处理，这里我们简单介绍下支持向量机中使用的核技巧，使用了核技巧的支持向量机就具备了分割非线性数据的能力。本篇可能是我们这个系列的最后一篇了，如果有机会我们在SMO中">
-<meta name="twitter:image" content="https://blog.csdn.net/imgs/svm/raw_feature.png">
+<meta name="twitter:title" content="tf.group()用于组合多个操作">
+<meta name="twitter:description" content="前言tf.group()用于创造一个操作，可以将传入参数的所有操作进行分组。API手册如:1234tf.group(    *inputs,    **kwargs) ops = tf.group(tensor1, tensor2,...)其中*inputs是0个或者多个用于组合tensor，一旦ops完成了，那么传入的tensor1,tensor2,...等等都会完成了，经常用于组合一些训练节点">
 
 
 
@@ -158,13 +154,13 @@
 
 
 
-  <link rel="canonical" href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm6/">
+  <link rel="canonical" href="https://blog.csdn.net/LoseInVain/2018/10/21/tensorflow/tf_group/">
 
 
 
 
 
-  <title>SVM沉思录6——支持向量机中的核技巧那些事儿 | 机器学习杂货铺2号店</title>
+  <title>tf.group()用于组合多个操作 | 机器学习杂货铺2号店</title>
   
 
 
@@ -335,7 +331,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.csdn.net/LoseInVain/2018/10/21/svm/svm6/">
+    <link itemprop="mainEntityOfPage" href="https://blog.csdn.net/LoseInVain/2018/10/21/tensorflow/tf_group/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="徐飞翔(Fesian Xu)">
@@ -352,7 +348,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">SVM沉思录6——支持向量机中的核技巧那些事儿</h1>
+          <h1 class="post-title" itemprop="name headline">tf.group()用于组合多个操作</h1>
         
 
         <div class="post-meta">
@@ -364,7 +360,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-21T12:16:07+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-21T21:23:56+08:00">
                 2018-10-21
               </time>
             
@@ -387,8 +383,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Machine Learning</span>
+                  <a href="/categories/TensorFlow-Basic-API/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow Basic API</span>
                   </a>
                 </span>
 
@@ -405,8 +401,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/10/21/svm/svm6/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/10/21/svm/svm6/" itemprop="commentsCount"></span>
+                <a href="/2018/10/21/tensorflow/tf_group/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/10/21/tensorflow/tf_group/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -414,7 +410,7 @@
 
           
           
-             <span id="/2018/10/21/svm/svm6/" class="leancloud_visitors" data-flag-title="SVM沉思录6——支持向量机中的核技巧那些事儿">
+             <span id="/2018/10/21/tensorflow/tf_group/" class="leancloud_visitors" data-flag-title="tf.group()用于组合多个操作">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -445,137 +441,10 @@
       
 
       
-        <font size="6"><b>前言</b></font> 
-
-<p><strong>我们在前文[1-5]中介绍了线性支持向量机的原理和推导，涉及到了软和硬的线性支持向量机，还有相关的广义拉格朗日乘数法和KKT条件等。然而，光靠着前面介绍的这些内容，只能够对近似于线性可分的数据进行分割，而不能对非线性的数据进行处理，这里我们简单介绍下支持向量机中使用的核技巧，使用了核技巧的支持向量机就具备了分割非线性数据的能力。本篇可能是我们这个系列的最后一篇了，如果有机会我们在SMO中再会吧。</strong></p>
-<p><strong>如有谬误，请联系指正。转载请注明出处。</strong></p>
-<p><em>联系方式：</em><br><strong>e-mail</strong>: <code>FesianXu@163.com</code><br><strong>QQ</strong>: <code>973926198</code><br><strong>github</strong>: <code>https://github.com/FesianXu</code></p>
-<hr>
-<h1 id="重回SVM"><a href="#重回SVM" class="headerlink" title="重回SVM"></a>重回SVM</h1><p>我们在前文[1-5]中就线性SVM做了比较系统的介绍和推导，我们这里做个简单的小回顾。<strong>支持向量机</strong>(Support Vector Machine,SVM)，是一种基于最大间隔原则进行推导出来的线性分类器，如果引入松弛项，则可以处理近似线性可分的一些数据，其最终的对偶问题的数学表达形式为(1.1)，之所以用对偶形式求解是因为可以轻松地引入所谓的核技巧，我们后面将会看到这个便利性。</p>
-<script type="math/tex; mode=display">
-\min_{\alpha}
-\frac{1}{2}\sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_jy_iy_j(x_i \cdot x_j)- \sum_{i=1}^N\alpha_i \\
-s.t. \ \sum_{i=1}^N\alpha_iy_i=0 \\
-\alpha_i \geq0,i=1,\cdots,N
-\tag{1.1}</script><p>其最终的分类超平面如(1.2):</p>
-<script type="math/tex; mode=display">
-\theta(x) = \rm{sign}(\sum_{i=1}^N \alpha^*_iy_i(x_i \cdot x)+b^*)
-\tag{1.2}</script><p>从KKT条件[3]中我们知道，除了支持向量SV会影响到决策面之外，其他所有的样本都是不会对决策面产生影响的，因此只有支持向量对应的$\alpha_i^* &gt; 0$，其他所有的$\alpha_j^*$都是等于0的。也就是说，我们的支持向量机只需要记住某些决定性的样本就可以了。<strong>实际上，这种需要“记住样本”的方法，正是一类核方法(kernel method)。</strong>这个我们后面可能会独立一些文章进行讨论，这里我们记住，因为SVM只需要记忆很少的一部分样本信息，因此被称之为<strong>稀疏核方法</strong>(Sparse Kernel Method)[6]。</p>
-<hr>
-<h1 id="更进一步观察SVM"><a href="#更进一步观察SVM" class="headerlink" title="更进一步观察SVM"></a>更进一步观察SVM</h1><p>我们这里更进一步对SVM的对偶优化任务和决策面，也即是式子(1.1)(1.2)进行观察，我们会发现，有一个项是相同作用的，那就是$(x_i \cdot x_j)$和$(x_i \cdot x)$，这两项都是在<strong>度量两个样本之间的距离</strong>。我们会发现，因为点积操作</p>
-<script type="math/tex; mode=display">
-x_i \cdot x_j = ||x_i|| \cdot ||x_j|| \cdot \cos(\theta)
-\tag{2.1}</script><p>在两个向量模长相同的情况下，可以知道这个点积的结果越大，两个样本之间的相似度越高，因此可以看作是一种样本之间的<strong>度量</strong>(metric)。这个我们可以理解，SVM作为一种稀疏核方法的之前就是一个核方法，是需要纪录训练样本的原始信息的。</p>
-<p>但是，我们注意到，我们是在<strong>原始的样本特征空间进行对比这个相似度的</strong>，这个很关键，因为在原始的样本特征空间里面，<strong>样本不一定是线性可分的，如果在这个空间里面，线性SVM将没法达到很好的效果。</strong></p>
-<hr>
-<h1 id="开始我们的非线性之路"><a href="#开始我们的非线性之路" class="headerlink" title="开始我们的非线性之路"></a>开始我们的非线性之路</h1><p>那么，我们在回顾了之前的一些东西之后，我们便可以开始我们的非线性之路了，抓好扶手吧，我们要起飞了。</p>
-<h2 id="高维映射"><a href="#高维映射" class="headerlink" title="高维映射"></a>高维映射</h2><p>对于非线性的数据，如下图所示，显然我们没法通过一个线性平面对其进行分割。<br><img src="/imgs/svm/raw_feature.png" alt="raw_feature"><br>当然，那仅仅是在二维的情况下我们没法对齐进行线性分割，谁说我们不能在更高的维度进行“维度打击”呢？！<strong>我们不妨把整个数据上升一个维度，投射到三维空间</strong>，我们将红色数据“拉高”，而绿色数据“留在原地”，那么我们就有了：<br><img src="/imgs/svm/projected_feature.png" alt="projected_feature"><br>发现没有，在二维线性不可分的数据，在三维空间就变得线性可分了。这个时候我们可以纪录下在三维情况下的决策面，然后在做个逆操作，将其投射到原先的二维空间中，那么我们就有了:<br><img src="/imgs/svm/recover.png" alt="recover"><br>看来这种维度打击还真是有效！</p>
-<p>$\nabla$<strong>我们其实还可以再举个更为简单的例子。</strong>$\nabla$<br>假如我们现在有一些数据，满足$x_1^2+x_2^2=1$，是的，我们不难发现这其实就是个以原点为圆心半径为1的圆，其参数为$x_1$和$x_2$，但是显然的，这个是个非线性的关系，如果要转换成一个线性的关系要怎么操作呢？简单，用$x_3 = x_1^2$和$x_4 = x_2^2$，我们有变形等价式$x_3+x_4=1$，于是我们便有了关于$x_3$和$x_4$的线性关系式，其关键就是映射$\phi(x)=x^2$。</p>
-<p>别小看这个例子哦，这个是我们核技巧的一个关键的直观想法哦。没晕吧？让我们继续吧。</p>
-<h1 id="基函数"><a href="#基函数" class="headerlink" title="基函数"></a>基函数</h1><p>其实我们刚才举得例子中的$\phi(x) = x^2$就是一个<strong>基函数</strong>(basic function)，其作用很直接，就是将一个属于特征空间$\mathcal{M}$的样本$\mathbf{x} \in \mathcal{M}$映射到新的特征空间$\mathcal{N}$，使得有$\phi(\mathbf{x}) \in \mathcal{N}$。如果诸位看官熟悉深度学习，那么我们就会发现，其实<strong>深度学习中的激活函数无非也就是起着这种作用，将浅层的特征空间映射到深层的特征空间，使得其尽可能地容易区分。可以说，激活函数就是一种基函数。</strong></p>
-<p>那么我们能不能把这种映射应用到，我们刚才的第二节提到的度量测试中的原始特征空间中的样本呢？答案自然是可以的，这样，我们就会有：</p>
-<script type="math/tex; mode=display">
-(\phi(\mathbf{x}_i) \cdot \phi(\mathbf{x_j}))
-\tag{3.1}</script><p>通常为了后续讨论，我们会将式子(3.1)表示为(3.2):</p>
-<script type="math/tex; mode=display">
-\mathcal{k}(\mathbf{x}_i, \mathbf{x}_j) = (\phi(\mathbf{x}_i) \cdot \phi(\mathbf{x_j})) = \phi(\mathbf{x}_i)^T\phi(\mathbf{x}_j)
-\tag{3.2}</script><p>好的，这样我们就将原始特征空间的样本映射到新的特征空间了，这个特征空间一般来说是更高维的线性可分的空间。我们将这里的$\mathcal{k}(\cdot, \cdot)$称之为<strong>核函数</strong>(kernels)，哦噢，我们的核函数正式出场了哦。</p>
-<p>在给定了核函数的情况下，我们的对偶优化问题和决策面变成了：</p>
-<script type="math/tex; mode=display">
-\min_{\alpha}
-\frac{1}{2}\sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_jy_iy_j \mathcal{k}(x_i \cdot x_j)- \sum_{i=1}^N\alpha_i \\
-s.t. \ \sum_{i=1}^N\alpha_iy_i=0 \\
-\alpha_i \geq0,i=1,\cdots,N
-\tag{3.3 对偶问题}</script><script type="math/tex; mode=display">
-\theta(x) = \rm{sign}(\sum_{i=1}^N \alpha^*_iy_i \mathcal{k}(x_i \cdot x)+b^*)
-\tag{3.4 决策面}</script><p>但是，实际上我们是人工很难找到这个合适的映射$\phi(\cdot)$的，特别是在数据复杂，而不是像例子那样的时候，那么我们该怎么办呢？我们能不能直接给定一个核函数$\mathcal{k}(\cdot, \cdot)$，然后就不用理会具体的基函数了呢？这样就可以隐式地在特征空间进行特征学习，而不需要显式地指定特征空间和基函数$\phi(\cdot)$[9]。答案是可以的！</p>
-<p>我们给定一个<strong>Mercer定理</strong>[10]：</p>
-<blockquote>
-<p>如果函数$\mathcal{k}(\cdot, \cdot)$是$\mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R}$上的映射（也就是从两个n维向量映射到实数域，既是进行样本度量计算）。那么如果$\mathcal{k}(\cdot, \cdot)$是一个有效核函数（也称为Mercer核函数），那么当且仅当对于训练样例$[x^{(1)}, x^{(2)}, \cdots, x^{(m)}]$，其相应的核函数矩阵是对称半正定(positive semidefinite)的，并且有$\mathcal{k}(x,y) = \mathcal{k}(y,x)$。</p>
-</blockquote>
-<p>嗯，定理很长，人生很短，这个定理说人话就是，如果这个核函数$\mathcal{k}(\cdot, \cdot)$是一个对称半正定的，并且其是个对称函数（度量的基本条件），那么这个核函数就肯定对应了某个样本与样本之间的度量，其关系正如(3.2)所示，因此隐式地定义出了样本的映射函数$\phi(\cdot)$，因此是个有效的核函数。</p>
-<p>诶，但是对称半正定不是矩阵才能判断吗？这里的核函数是个函数耶？嗯…也不尽然，休息下，我们下一节继续吧。</p>
-<h2 id="无限维向量与希尔伯特空间"><a href="#无限维向量与希尔伯特空间" class="headerlink" title="无限维向量与希尔伯特空间"></a>无限维向量与希尔伯特空间</h2><p>先暂时忘记之前的东西吧，清清脑袋，轻装上阵。我们在以前学习过得向量和矩阵都是有限维度的，那么是否存在<strong>无限维</strong>的向量和矩阵呢？其实，<strong>函数</strong>正是可以看成<strong>无限维的向量</strong>，想法其实很简单，假如有一个数值函数$f:x \rightarrow y$，假设其定义域是整个实数，如果对应每一个输入，都输出一个输出值，我们可以把所有输出值排列起来，也就形成了一个无限维的向量，表达为${y}^{\infty}_i$。</p>
-<p>而核函数$\mathcal{k}(\mathbf{x}_i, \mathbf{x}_j)$作为一个双变量函数，就可以看成一个行列都是无限维的矩阵了。这样我们就可以定义其正定性了：</p>
-<script type="math/tex; mode=display">
-\int\int f(\mathbf{x})\mathcal{k}(\mathbf{x}, \mathbf{y})f(\mathbf{y}) \rm{d} \mathbf{x} \rm{d} \mathbf{y} \geq 0
-\tag{3.5}</script><p>既然是个矩阵，那么我们就可以对其进行特征分解对吧，只不过因为是无限维，我们需要使用积分，表达式类似于矩阵的特征值分解：</p>
-<script type="math/tex; mode=display">
-\int \mathcal{k}(\mathbf{x}, \mathbf{y}) \Phi(\mathbf{x}) \rm{d} \mathbf{x} = \lambda \Phi(\mathbf{y})
-\tag{3.6}</script><p>这里的特征就不是<strong>特征向量</strong>了，而是<strong>特征函数</strong>（看成无限维向量也可以的）。对于不同的特征值$\lambda_1$和$\lambda_2$，和对应的特征函数$\Phi_1(\mathbf{x})$和$\Phi_2(\mathbf{x})$，有：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\int \mathcal{k}(\mathbf{x}, \mathbf{y}) \Phi_1(\mathbf{x}) \Phi_2(\mathbf{x}) \rm{d} \mathbf{x} &= \int \mathcal{k}(\mathbf{x}, \mathbf{y}) \Phi_2(\mathbf{x}) \Phi_1(\mathbf{x}) \rm{d} \mathbf{x} \\
-\rightarrow \int \lambda_1 \Phi_1(\mathbf{x}) \Phi_2(\mathbf{x}) \rm{d} \mathbf{x} &= \int \lambda_2 \Phi_2(\mathbf{x}) \Phi_1(\mathbf{x}) \rm{d} \mathbf{x}
-\end{aligned}
-\tag{3.7}</script><p>因为特征值不为0，因此由(3.7)我们有:</p>
-<script type="math/tex; mode=display">
-< \Phi_1,  \Phi_2 > = \int \Phi_1(\mathbf{x}) \Phi_2(\mathbf{x}) \rm{d} \mathbf{x} = 0
-\tag{3.8}</script><p>也就是任意两个特征函数之间是<strong>正交</strong>(Orthogonal)的，一个核函数对应着无限个特征值${\lambda_i}_{i=1}^{\infty}$和无限个特征函数${\Phi_i}_{i=1}^{\infty}$，这个正是原先函数空间的一组正交基。</p>
-<p>回想到我们以前学习到的矩阵分解，我们知道我们的矩阵$A$可以表示为：</p>
-<script type="math/tex; mode=display">
-A = Q\Lambda Q^T
-\tag{3.9}</script><p>其中$Q$是$A$的特征向量组成的正交矩阵，$\Lambda$是对角矩阵。特征值$\Lambda_{i,i}$对应的特征向量是矩阵$Q$的第$i$列。我们看到在有限维空间中可以将矩阵表示为特征向量和特征值的组合表达。同样的，在无限维空间中，也可以定义这种分解，因此可以将核函数$\mathcal{k}(\cdot,\cdot)$表示为:</p>
-<script type="math/tex; mode=display">
-\mathcal{k}(\mathbf{x}, \mathbf{y}) = \sum_{i=0}^{\infty} \lambda_i \Phi_i(\mathbf{x}) \Phi_i(\mathbf{y})
-\tag{3.10}</script><p>重新整理下，将${\sqrt{\lambda_i}\Phi_i}_{i=1}^{\infty}$作为一组正交基，构建出一个空间$\mathcal{H}$。不难发现，这个空间是无限维的，如果再深入探讨，还会发现他是完备的内积空间，因此被称之为<strong>希尔伯特空间</strong>(Hilbert space)[13]。别被名字给唬住了，其实就是将欧几里德空间的性质延伸到了无限维而已。</p>
-<p>回到我们的希尔伯特空间，我们会发现，这个空间中的任意一个函数（向量）都可以由正交基进行线性表出：</p>
-<script type="math/tex; mode=display">
-f = \sum_{i=1}^{\infty} f_i \sqrt{\lambda_i} \Phi_i
-\tag{3.11}</script><p>所以$f$可以表示为空间$\mathcal{H}$中的一个无限维向量：</p>
-<script type="math/tex; mode=display">
-f = (f_1, f_2, \cdots,)^T_{\mathcal{H}}
-\tag{3.12}</script><h2 id="再生性-Reproduce"><a href="#再生性-Reproduce" class="headerlink" title="再生性(Reproduce)"></a>再生性(Reproduce)</h2><p>前面3.3讨论了很多关于函数在希尔伯特空间上的表出形式，我们这里在仔细观察下核函数。我们发现，其实核函数可以拆分为：</p>
-<script type="math/tex; mode=display">
-\mathcal{k}(\mathbf{x}, \mathbf{y}) = \sum_{i=0}^{\infty}\lambda_i\Phi_i(\mathbf{x})\Phi_i(\mathbf{y}) = < \mathcal{k}(\mathbf{x},\cdot), \mathcal{k}(\mathbf{y}, \cdot) >_{\mathcal{H}}
-\tag{3.13}</script><p>其中:</p>
-<script type="math/tex; mode=display">
-\mathcal{k}(\mathbf{x}, \cdot) = (\sqrt{\lambda_1}\Phi_1(\mathbf{x}),\sqrt{\lambda_2}\Phi_2(\mathbf{x}),\cdots)^T_{\mathcal{H}} \\
-\mathcal{k}(\mathbf{y}, \cdot) = (\sqrt{\lambda_1}\Phi_1(\mathbf{y}),\sqrt{\lambda_2}\Phi_2(\mathbf{y}),\cdots)^T_{\mathcal{H}}
-\tag{3.14}</script><p>发现没有，(3.13)将核函数表示为了两个函数的内积，是不是很想我们的式子(3.2)了呢。我们把这种可以用核函数来再生出两个函数的内积的这种性质称之为<strong>再生性</strong>(reproduce)，对应的希尔伯特空间称之为<strong>再生核希尔伯特空间</strong>(Reproducing Kernel Hilbert Space,RKHS)，有点吓人的名词，但是如果你能理解刚才的分解，这个其实还是蛮直接的。</p>
-<p>我们更进一步吧，如果定义一个映射$\phi(\cdot)$:</p>
-<script type="math/tex; mode=display">
-\phi(\mathbf{x}) = (\sqrt{\lambda_1}\Phi_1(\mathbf{x}),\sqrt{\lambda_2}\Phi_2(\mathbf{x}),\cdots)^T
-\tag{3.15}</script><p>当然这是个无限维的向量。这个映射将样本点$\mathbf{x} \in \mathbb{R}^n$投射到无限维的特征空间$\mathcal{H}$中，我们有：</p>
-<script type="math/tex; mode=display">
-< \phi(\mathbf{x}), \phi(\mathbf{y}) > = \mathcal{k}(\mathbf{x}, \mathbf{y}) = \phi(\mathbf{x})^T\phi(\mathbf{y})
-\tag{3.16}</script><p>因此，我们解决了3.2中提出的问题，我们根本就不需要知道具体的映射函数$\phi$是什么形式的，特征空间在哪里（我们甚至可以投射到无限维特征空间，比如我们接下来要讲到的高斯核函数），只要是一个对称半正定的核函数$K$，那么就必然存在映射$\phi$和特征空间$\mathcal{H}$，使得式子(3.16)成立。</p>
-<p>这就是所谓的<strong>核技巧</strong>(Kernel trick)[12]。</p>
-<p><strong>PS:</strong> 为了理解为什么是从原始的有限维的特征空间映射到无限维的希尔伯特空间，我们从式子(3.15)其实不难发现，$\mathbf{x} \in \mathbb{R}^n$，$\sqrt{\lambda_i}\Phi_i(\mathbf{x}) \in \mathbb{R}$，而我们的$i \rightarrow \infty$，因此可以看成映射成了无限维的特征。</p>
-<h2 id="高斯核函数的无限维映射性质"><a href="#高斯核函数的无限维映射性质" class="headerlink" title="高斯核函数的无限维映射性质"></a>高斯核函数的无限维映射性质</h2><p>有效的核函数，也就是对称半正定的核函数有很多，而且有一定的性质可以扩展组合这些核函数[6]，这一块内容比较多，我们以后独立一篇文章继续讨论。这里我们主要看下使用最多的核函数，<strong>高斯核函数</strong>，也经常称之为<strong>径向基函数</strong>。</p>
-<p>高斯核函数的数学表达形式如下所示：</p>
-<script type="math/tex; mode=display">
-\mathcal{k}(\mathbf{x}, \mathbf{y}) = \exp(-||\mathbf{x}-\mathbf{y}||^2/2\sigma^2)
-\tag{3.17}</script><p>我们现在对(3.17)进行变形(这里为了方便假设$\mathbf{x},\mathbf{y}$是一维的)：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\exp(-||x-y||^2/2\sigma^2) &= \exp(-\lambda||x-y||^2) \\
-&= \exp(-\lambda x^2+2\lambda xy-\lambda y^2) \\
-&= \exp(-\lambda x^2) \exp(-\lambda y^2) \exp(2\lambda xy)
-\end{aligned}
-\tag{3.18}</script><p>利用泰勒展开[14]对式子(3.18)中的$\exp(2\lambda xy)$进行展开，有:</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\exp(2\lambda xy) &= \sum_{i=1}^{\infty} \dfrac{(2\lambda xy)^i}{i!} \\
-&= \sum_{i=1}^{\infty} \sqrt{\dfrac{2^i \lambda}{i!}}x \cdot \sqrt{\dfrac{2^i \lambda}{i!}}y
-\end{aligned}
-\tag{3.19}</script><p>现在结合(3.18)和(3.19)，我们有：</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-\exp(-||x-y||^2&/2\sigma^2) \\
-&= \sum_{i=1}^{\infty} \sqrt{\dfrac{2^i \lambda}{i!}} \exp{(-\lambda x^2)}x \cdot \sqrt{\dfrac{2^i \lambda}{i!}} \exp{(-\lambda y^2)}y
-\end{aligned}
-\tag{3.20}</script><p>用序列$\mathbf{x} = {\sqrt{\dfrac{2^1 \lambda}{1!}} \exp{(-\lambda x^2)}x, \sqrt{\dfrac{2^2 \lambda}{2!}} \exp{(-\lambda x^2)}x, \cdots}$, $\mathbf{y}={\sqrt{\dfrac{2^1 \lambda}{1!}} \exp{(-\lambda y^2)}y, \sqrt{\dfrac{2^2 \lambda}{2!}} \exp{(-\lambda y^2)}y,\cdots}$<br>这两个都是无限维向量，也即是一个映射函数$\phi(\cdot)$。于是式子(3.20)可以改写为:</p>
-<script type="math/tex; mode=display">
-\exp(-||x-y||^2/2\sigma^2) = \mathbf{x}^T \mathbf{y} = \phi(\mathbf{x})^T \phi(\mathbf{y})
-\tag{3.21}</script><p>看，我们常用的高斯核函数正是一个无限维映射的核函数。</p>
-<hr>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我们前面对再生核希尔伯特空间进行了简单的介绍，同时了解了无限维映射的核函数，高斯核函数，事实上，我们原始的SVM对偶问题推导中的$(x_i \cdot x_j)$也可以看成一种核函数，只不过这是个线性核函数而已，映射到了原始的特征空间，有：</p>
-<script type="math/tex; mode=display">
-\mathcal{k}(\mathbf{x}, \mathbf{y}) = \mathbf{x}^T \mathbf{y}
-\tag{4.1}</script><p>在后续的文章中，我们将会介绍更多的核函数，如多项式核函数对数sigmoid核函数等，同时在后续的文章中，我们也将继续探讨关于基函数的一些应用。</p>
-<hr>
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>[1]. <a href="https://blog.csdn.net/LoseInVain/article/details/78636176">《SVM笔记系列之一》什么是支持向量机SVM</a><br>[2]. <a href="https://blog.csdn.net/LoseInVain/article/details/78636285">《SVM笔记系列之二》SVM的拉格朗日函数表示以及其对偶问题</a><br>[3]. <a href="https://blog.csdn.net/LoseInVain/article/details/78624888">《SVM笔记系列之三》拉格朗日乘数法和KKT条件的直观解释</a><br>[4]. <a href="https://blog.csdn.net/LoseInVain/article/details/78636341">《SVM笔记系列之四》最优化问题的对偶问题</a><br>[5]. <a href="https://blog.csdn.net/LoseInVain/article/details/78646479">《SVM笔记系列之五》软间隔线性支持向量机</a><br>[6]. Bishop C M. Pattern recognition and machine learning (information science and statistics) springer-verlag new york[J]. Inc. Secaucus, NJ, USA, 2006.<br>[7]. Zhang T. An introduction to support vector machines and other kernel-based learning methods[J]. AI Magazine, 2001, 22(2): 103.<br>[8]. <a href="http://www.eric-kim.net/eric-kim-net/posts/1/kernel_trick.html" target="_blank" rel="noopener">Everything You Wanted to Know about the Kernel Trick</a><br>[9]. 李航. 统计学习方法[J]. 2012.<br>[10]. <a href="https://www.cnblogs.com/jerrylead/archive/2011/03/18/1988406.html" target="_blank" rel="noopener">核函数（Kernels） </a><br>[11]. <a href="http://www.cnblogs.com/LeftNotEasy/archive/2011/01/19/svd-and-applications.html" target="_blank" rel="noopener">机器学习中的数学(5)-强大的矩阵奇异值分解(SVD)及其应用</a><br>[12]. <a href="http://iera.name/a-story-of-basis-and-kernel-part-ii-reproducing-kernel-hilbert-space/" target="_blank" rel="noopener">A Story of Basis and Kernel – Part II: Reproducing Kernel Hilbert Space</a><br>[13]. <a href="https://en.wikipedia.org/wiki/Hilbert_space" target="_blank" rel="noopener">Hilbert space</a><br>[14]. <a href="https://blog.csdn.net/qq_38906523/article/details/79851654">函数的泰勒(Taylor)展开式</a></p>
+        <p><font size="6"><b>前言</b></font><br><code>tf.group()</code>用于创造一个操作，可以将传入参数的所有操作进行分组。<a href="https://www.tensorflow.org/api_docs/python/tf/group" target="_blank" rel="noopener">API手册</a>如:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tf.group(</span><br><span class="line">    *inputs,</span><br><span class="line">    **kwargs</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p><code>ops = tf.group(tensor1, tensor2,...)</code><br>其中<code>*inputs</code>是0个或者多个用于组合tensor，一旦<code>ops</code>完成了，那么传入的<code>tensor1,tensor2,...</code>等等都会完成了，经常用于组合一些训练节点，如在Cycle GAN中的多个训练节点，例子如：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">generator_train_op = tf.train.AdamOptimizer(g_loss, ...)</span><br><span class="line">discriminator_train_op = tf.train.AdamOptimizer(d_loss,...)</span><br><span class="line">train_ops = tf.groups(generator_train_op ,discriminator_train_op)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">  sess.run(train_ops) </span><br><span class="line">  <span class="comment"># 一旦运行了train_ops,那么里面的generator_train_op和discriminator_train_op都将被调用</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>注意的是，tf.group()返回的是个操作，而不是值，如果你想下面一样用，返回的将不是值</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = tf.Variable([<span class="number">5</span>])</span><br><span class="line">b = tf.Variable([<span class="number">6</span>])</span><br><span class="line">c = a+b</span><br><span class="line">d = a*b</span><br><span class="line">e = a/b</span><br><span class="line">ops = tf.group(c,d,e)</span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    sess.run(tf.global_variables_initializer())</span><br><span class="line">    ee = sess.run(ops)</span><br></pre></td></tr></table></figure></p>
+<p>返回的将不是c,d,e的运算结果，而是一个<code>None</code>，就是因为这个是一个操作，而不是一个张量。如果需要返回结果，请参考<a href="https://www.tensorflow.org/api_docs/python/tf/tuple" target="_blank" rel="noopener"><code>tf.tuple()</code></a></p>
 
       
     </div>
@@ -637,11 +506,9 @@ f = (f_1, f_2, \cdots,)^T_{\mathcal{H}}
       
         <div class="post-tags">
           
-            <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+            <a href="/tags/Deep-Learning/" rel="tag"><i class="fa fa-tag"></i> Deep Learning</a>
           
-            <a href="/tags/SVM/" rel="tag"><i class="fa fa-tag"></i> SVM</a>
-          
-            <a href="/tags/Kernel-Trick/" rel="tag"><i class="fa fa-tag"></i> Kernel Trick</a>
+            <a href="/tags/TensorFlow/" rel="tag"><i class="fa fa-tag"></i> TensorFlow</a>
           
         </div>
       
@@ -654,8 +521,8 @@ f = (f_1, f_2, \cdots,)^T_{\mathcal{H}}
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/21/svm/svm5/" rel="next" title="SVM沉思录5——软间隔线性支持向量机">
-                <i class="fa fa-chevron-left"></i> SVM沉思录5——软间隔线性支持向量机
+              <a href="/2018/10/21/tensorflow/tf_tuple/" rel="next" title="tf.tuple()用于组合多个张量输入">
+                <i class="fa fa-chevron-left"></i> tf.tuple()用于组合多个张量输入
               </a>
             
           </div>
@@ -664,8 +531,8 @@ f = (f_1, f_2, \cdots,)^T_{\mathcal{H}}
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/10/21/tensorflow/tf_gradient_define/" rel="prev" title="在TensorFlow中自定义梯度的两种方法">
-                在TensorFlow中自定义梯度的两种方法 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/10/21/tensorflow/tf.foldr()/" rel="prev" title="TensorFlow高阶函数之 tf.foldl()和tf.foldr()">
+                TensorFlow高阶函数之 tf.foldl()和tf.foldr() <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -755,17 +622,8 @@ f = (f_1, f_2, \cdots,)^T_{\mathcal{H}}
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -884,22 +742,6 @@ f = (f_1, f_2, \cdots,)^T_{\mathcal{H}}
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#重回SVM"><span class="nav-number">1.</span> <span class="nav-text">重回SVM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更进一步观察SVM"><span class="nav-number">2.</span> <span class="nav-text">更进一步观察SVM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开始我们的非线性之路"><span class="nav-number">3.</span> <span class="nav-text">开始我们的非线性之路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#高维映射"><span class="nav-number">3.1.</span> <span class="nav-text">高维映射</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基函数"><span class="nav-number">4.</span> <span class="nav-text">基函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#无限维向量与希尔伯特空间"><span class="nav-number">4.1.</span> <span class="nav-text">无限维向量与希尔伯特空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#再生性-Reproduce"><span class="nav-number">4.2.</span> <span class="nav-text">再生性(Reproduce)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高斯核函数的无限维映射性质"><span class="nav-number">4.3.</span> <span class="nav-text">高斯核函数的无限维映射性质</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
