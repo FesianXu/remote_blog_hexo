@@ -100,7 +100,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="机器学习,贝叶斯理论,贝叶斯决策,推理">
 
 
 
@@ -113,17 +113,22 @@
 
 
 
-<meta name="description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="标签">
-<meta property="og:url" content="https://blog.csdn.net/LoseInVain/tags/index.html">
+<meta name="description" content="前言前面[1]我们介绍了贝叶斯决策的一些知识，介绍了基于最小化分类错误率和最小化分类损失的两种决策准则，接下来，我们简单讨论下分类问题中的二个步骤，推理和决策。 如有谬误，请联系指正。转载请注明出处。 联系方式：e-mail: FesianXu@163.comQQ: 973926198github: https://github.com/FesianXu  分类问题我们在之前的文章中已经介绍过分类">
+<meta name="keywords" content="机器学习,贝叶斯理论,贝叶斯决策,推理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《贝叶斯之旅》第二讲，分类问题的两大过程，推理和决策">
+<meta property="og:url" content="https://blog.csdn.net/LoseInVain/2018/10/21/bayesian/cls_stage/index.html">
 <meta property="og:site_name" content="机器学习杂货铺2号店">
-<meta property="og:description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
+<meta property="og:description" content="前言前面[1]我们介绍了贝叶斯决策的一些知识，介绍了基于最小化分类错误率和最小化分类损失的两种决策准则，接下来，我们简单讨论下分类问题中的二个步骤，推理和决策。 如有谬误，请联系指正。转载请注明出处。 联系方式：e-mail: FesianXu@163.comQQ: 973926198github: https://github.com/FesianXu  分类问题我们在之前的文章中已经介绍过分类">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-20T16:11:44.778Z">
+<meta property="og:image" content="https://blog.csdn.net/imgs/bayesian/outlier.jpg">
+<meta property="og:image" content="https://blog.csdn.net/imgs/bayesian/posterior_class.png">
+<meta property="og:image" content="https://blog.csdn.net/imgs/bayesian/reject.png">
+<meta property="og:updated_time" content="2018-10-21T15:56:56.950Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="标签">
-<meta name="twitter:description" content="The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.">
+<meta name="twitter:title" content="《贝叶斯之旅》第二讲，分类问题的两大过程，推理和决策">
+<meta name="twitter:description" content="前言前面[1]我们介绍了贝叶斯决策的一些知识，介绍了基于最小化分类错误率和最小化分类损失的两种决策准则，接下来，我们简单讨论下分类问题中的二个步骤，推理和决策。 如有谬误，请联系指正。转载请注明出处。 联系方式：e-mail: FesianXu@163.comQQ: 973926198github: https://github.com/FesianXu  分类问题我们在之前的文章中已经介绍过分类">
+<meta name="twitter:image" content="https://blog.csdn.net/imgs/bayesian/outlier.jpg">
 
 
 
@@ -153,13 +158,13 @@
 
 
 
-  <link rel="canonical" href="https://blog.csdn.net/LoseInVain/tags/">
+  <link rel="canonical" href="https://blog.csdn.net/LoseInVain/2018/10/21/bayesian/cls_stage/">
 
 
 
 
 
-  <title>标签 | 机器学习杂货铺2号店</title>
+  <title>《贝叶斯之旅》第二讲，分类问题的两大过程，推理和决策 | 机器学习杂货铺2号店</title>
   
 
 
@@ -328,40 +333,297 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.csdn.net/LoseInVain/2018/10/21/bayesian/cls_stage/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="徐飞翔(Fesian Xu)">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/site_imgs/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="机器学习杂货铺2号店">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">标签</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                10 tags in total
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/Debug-Practice/" style="font-size: 12px; color: #ccc">Debug Practice</a> <a href="/tags/Deep-Learning/" style="font-size: 30px; color: #111">Deep Learning</a> <a href="/tags/Kernel-Trick/" style="font-size: 12px; color: #ccc">Kernel Trick</a> <a href="/tags/Machine-Learning/" style="font-size: 30px; color: #111">Machine Learning</a> <a href="/tags/Pytorch/" style="font-size: 12px; color: #ccc">Pytorch</a> <a href="/tags/SVM/" style="font-size: 30px; color: #111">SVM</a> <a href="/tags/TensorFlow/" style="font-size: 24px; color: #4f4f4f">TensorFlow</a> <a href="/tags/概率论/" style="font-size: 18px; color: #8e8e8e">概率论</a> <a href="/tags/统计学习方法/" style="font-size: 18px; color: #8e8e8e">统计学习方法</a> <a href="/tags/贝叶斯理论/" style="font-size: 18px; color: #8e8e8e">贝叶斯理论</a>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">《贝叶斯之旅》第二讲，分类问题的两大过程，推理和决策</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-21T23:53:57+08:00">
+                2018-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Bayesian-Theory/" itemprop="url" rel="index">
+                    <span itemprop="name">Bayesian Theory</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/21/bayesian/cls_stage/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/10/21/bayesian/cls_stage/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/21/bayesian/cls_stage/" class="leancloud_visitors" data-flag-title="《贝叶斯之旅》第二讲，分类问题的两大过程，推理和决策">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p><font size="6"><b>前言</b></font><br><strong>前面[1]我们介绍了贝叶斯决策的一些知识，介绍了基于最小化分类错误率和最小化分类损失的两种决策准则，接下来，我们简单讨论下分类问题中的二个步骤，推理和决策。</strong></p>
+<p><strong>如有谬误，请联系指正。转载请注明出处。</strong></p>
+<p><em>联系方式：</em><br><strong>e-mail</strong>: <code>FesianXu@163.com</code><br><strong>QQ</strong>: <code>973926198</code><br><strong>github</strong>: <code>https://github.com/FesianXu</code></p>
+<hr>
+<h1 id="分类问题"><a href="#分类问题" class="headerlink" title="分类问题"></a>分类问题</h1><p>我们在之前的文章中已经介绍过分类问题了，简单的说就是给定一个样本$\bf{x} \in \mathbb{R}^n$，将其划分到有限的标签集$\bf{Y} \in {0,1,\cdots,m}$中。通常来说，我们可以将整个分类问题划分为两个独立的过程，分别是<strong>推理（inference）</strong>和<strong>决策(decision)</strong>阶段。在推理阶段，我们通过已有的训练集，学习到后验概率$p(\mathcal{C}_k|\bf{x})$，或者也可以通过学习联合概率分布$p(\mathcal{C}_k, \bf{x})$，然后也可以得到后验概率。而接下来，在决策阶段，就根据这个后验概率，对样本的类别进行判断决策。这个决策过程可以参考文章[1]的讨论。</p>
+<p><strong>注意到，很多时候，这两个过程可以合在一起，将问题简化为成：学习一个映射$f(\bf{x}) \in \mathbb{R}^m, \bf{x} \in \mathbb{R}^n$，直接将样本映射到类别标签。</strong>这个过程中，将不会涉及到任何的后验概率等，而是直接得出预测结果，这个函数因此称之为<strong>判别函数(Discriminant function)</strong>。[2] page 43</p>
+<p>事实上，这些讨论过的方法都可以用来解决分类问题，并且在实际应用中都有所应用，我们按照复杂程度进行降序排列之后，有：</p>
+<ol>
+<li><p>通过解决推理问题之后，我们可以给每一个类别估计出类条件概率$p(\mathbf{x}|\mathcal{C}_k)$，同时，先验概率$p(\mathcal{C}_k)$也很容易可以估计出来，然后通过贝叶斯公式我们可以得到后验概率：</p>
+<script type="math/tex; mode=display">
+p(\mathcal{C}_k | \mathbf{x}) = \frac{p(\mathbf{x}|\mathcal{C}_k)p(\mathcal{C}_k)}{p(\mathbf{x})}
+\tag{1.1}</script><p>我们有:</p>
+<script type="math/tex; mode=display">
+p(\mathbf{x}) = \sum_{k} p(\mathbf{x}|\mathcal{C}_k)p(\mathcal{C}_k)
+\tag{1.2 对输入分布进行建模}</script><p>等价地，我们可以对联合概率密度$p(\mathbf{x},\mathcal{C}_k)$进行建模，然后进行标准化后得到后验概率。像这种显式地或者隐式地对输入和输出进行概率分布建模的模型，称之为<strong>生成模型(generative models)</strong>，因为从这个联合分布中进行采样可以生成输入空间中的一些<strong>虚假生成数据(synthetic data)</strong>。</p>
+</li>
+<li><p>通过解决推理问题后，得到后验概率$p(\mathcal{C}_k|\mathbf{x})$，然后通过决策论进行类别判断。这种模型称之为<strong>判别模型(Discriminative model)</strong>。</p>
+</li>
+<li>寻找一个函数$f(\mathbf{x})$，称之为判别函数，直接将输入的$\mathbf{x}$映射到一个类别标签上，比如SVM分类器等。在这个情形下，并没有用到任何概率，也就是说我们对预测的结果其实是没有办法判断可靠程度的。</li>
+</ol>
+<p>我们接下来分别讨论下这三种方法的优劣点。</p>
+<hr>
+<h1 id="孰优孰劣，判别模型和生成模型"><a href="#孰优孰劣，判别模型和生成模型" class="headerlink" title="孰优孰劣，判别模型和生成模型"></a>孰优孰劣，判别模型和生成模型</h1><h2 id="生成模型"><a href="#生成模型" class="headerlink" title="生成模型"></a>生成模型</h2><p>生成模型是对于数据量需求最高的，同时运算量也是最大的，因为其需要训练出包含$\mathbf{x}$和$\mathcal{C}_k$的联合分布，如果数据量不够，将会导致严重的过拟合现象[3]。对于很多应用下来说，$\mathbf{x}$是一个维度很高的特征向量，因此为了使得类条件概率得到一个较为合理的精度，就需要很多的数据量进行计算。但是，生成模型也有一些很好的性质，比如说可以从中进行采样生成出一些假数据，这个应用目前在很多image inpainting[4]，style transfer[5]任务中经常用到。而且，因为通过联合概率分布可以通过式子(1.2)计算出边缘概率分布$p(\mathbf{x})$。这个输入空间的边缘概率分布很有用，因为其可以判断输入的新数据是否是一个所谓的<strong>离群点(outlier)</strong>，离群点如下图所示。这个就是所谓的<strong>离群点检测(outlier detection)</strong>或者称之为<strong>异常检测(novelty detection)</strong>，这个在网络欺诈预测，银行欺诈预测，电子垃圾邮件检测中很有用。</p>
+<p><img src="/imgs/bayesian/outlier.jpg" alt="outlier"></p>
+<h2 id="判别模型"><a href="#判别模型" class="headerlink" title="判别模型"></a>判别模型</h2><p>在分类任务中，很多时候你只是做个分类而已，并不用进行离群点检测，也不需要生成虚假样本.这个时候，如果还用生成模型去进行后验概率的估计，就浪费了很多资源。我们观察下图，我们可以发现，类条件概率其实和后验概率并没有必然的影响。这个时候，你就需要采用判别模型。<br><img src="/imgs/bayesian/posterior_class.png" alt="posterior_class"><br>不仅如此，采用了判别模型还有一个好处就是，可以利用所谓的<strong>拒绝域(reject option)</strong>把一些过于边缘的判断拒绝掉。比如我们仅有10%的把握判断某人为癌症患者，那么我们就情愿不做这个判断，交给更为权威的人或者系统进行下一步的处理。如下图所示，绿色的水平线表示拒绝水平，只有后验概率高于这个水平线，才能认为是可靠的判断。我们将会看到，在基于判别函数的情况下，因为并没有概率的存在，因此并不能进行这种操作。</p>
+<p><img src="/imgs/bayesian/reject.png" alt="reject"></p>
+<h2 id="判别函数方法"><a href="#判别函数方法" class="headerlink" title="判别函数方法"></a>判别函数方法</h2><p>有比以上俩种方法更为简单，计算量更少的方法，那就是判别函数法。在这个情况下，因为是直接用训练数据拟合一个函数$f(\mathbf{x})$对样本进行分类，因此无法得到后验概率$p(\mathcal{C}_k|\mathbf{x})$。在这个方法中，只能最小化分类错误率，而没法给不同类型的分类错误进行区别[1]，采用最小化分类风险，这是个遗憾的地方。</p>
+<hr>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>[1] <a href="https://blog.csdn.net/LoseInVain/article/details/82780472">《贝叶斯之旅||第一讲，贝叶斯决策》</a></p>
+<p>[2] Bishop C M. Pattern recognition and machine learning (information science and statistics) springer-verlag new york[J]. Inc. Secaucus, NJ, USA, 2006.</p>
+<p>[3] <a href="https://blog.csdn.net/LoseInVain/article/details/78108990">《机器学习模型的容量，过拟合与欠拟合》</a></p>
+<p>[4] <a href="https://blog.csdn.net/gavinmiaoc/article/details/80802967">《基于深度学习的Image Inpainting (图像修复)论文推荐(持续更新)》</a></p>
+<p>[5] <a href="https://www.jianshu.com/p/b1189448eb2e" target="_blank" rel="noopener">《Image Style Transfer》</a></p>
+
       
     </div>
     
     
     
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/site_imgs/wechat.png" alt="徐飞翔(Fesian Xu) WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/site_imgs/alipay.jpg" alt="徐飞翔(Fesian Xu) Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+	
+	<div>
+    
+    <div>
+    
+        <div style="text-align:center;color: #4B0082;font-size:18px;">
+            -------------The End
+            <i class="fa fa-paw"></i>
+            Thanks For Your Reading-------------
+        </div>
+    
+</div>
+
+    
+    </div>
+	
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/贝叶斯理论/" rel="tag"><i class="fa fa-tag"></i> 贝叶斯理论</a>
+          
+            <a href="/tags/统计学习方法/" rel="tag"><i class="fa fa-tag"></i> 统计学习方法</a>
+          
+            <a href="/tags/概率论/" rel="tag"><i class="fa fa-tag"></i> 概率论</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/21/bayesian/bayesian_decision/" rel="next" title="《贝叶斯之旅》第一讲，贝叶斯决策">
+                <i class="fa fa-chevron-left"></i> 《贝叶斯之旅》第一讲，贝叶斯决策
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+
+</script>
+
+
+
+      
+    </div>
   </div>
 
 
@@ -401,8 +663,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -527,6 +798,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#分类问题"><span class="nav-number">1.</span> <span class="nav-text">分类问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#孰优孰劣，判别模型和生成模型"><span class="nav-number">2.</span> <span class="nav-text">孰优孰劣，判别模型和生成模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成模型"><span class="nav-number">2.1.</span> <span class="nav-text">生成模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#判别模型"><span class="nav-number">2.2.</span> <span class="nav-text">判别模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#判别函数方法"><span class="nav-number">2.3.</span> <span class="nav-text">判别函数方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
