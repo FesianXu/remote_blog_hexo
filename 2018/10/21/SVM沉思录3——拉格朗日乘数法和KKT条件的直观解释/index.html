@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="机器学习,SVM,支持向量机,拉格朗日乘数法,KKT条件">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="机器学习杂货铺2号店" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="前言在SVM的推导中，出现了核心的一个最优化问题，这里我们简单介绍下最优化问题，特别是带有约束的最优化问题，并且引入拉格朗日乘数法和广义拉格朗日乘数法，介绍并且直观解释了KKT条件，用于解决带约束的最优化问题。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。如有误，请联系指正。转载请注明出处。联系方式：e-mail: FesianXu@163.comQ">
+<meta name="keywords" content="机器学习,SVM,支持向量机,拉格朗日乘数法,KKT条件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释">
+<meta property="og:url" content="https://blog.csdn.net/LoseInVain/2018/10/21/SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释/index.html">
+<meta property="og:site_name" content="机器学习杂货铺2号店">
+<meta property="og:description" content="前言在SVM的推导中，出现了核心的一个最优化问题，这里我们简单介绍下最优化问题，特别是带有约束的最优化问题，并且引入拉格朗日乘数法和广义拉格朗日乘数法，介绍并且直观解释了KKT条件，用于解决带约束的最优化问题。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。如有误，请联系指正。转载请注明出处。联系方式：e-mail: FesianXu@163.comQ">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://blog.csdn.net/imgs/svm/general_min.png">
+<meta property="og:image" content="https://blog.csdn.net/imgs/svm/lm_example.png">
+<meta property="og:image" content="https://blog.csdn.net/imgs/svm/general_lagrange_multipliers.png">
+<meta property="og:updated_time" content="2018-10-21T01:46:22.868Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释">
+<meta name="twitter:description" content="前言在SVM的推导中，出现了核心的一个最优化问题，这里我们简单介绍下最优化问题，特别是带有约束的最优化问题，并且引入拉格朗日乘数法和广义拉格朗日乘数法，介绍并且直观解释了KKT条件，用于解决带约束的最优化问题。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。如有误，请联系指正。转载请注明出处。联系方式：e-mail: FesianXu@163.comQ">
+<meta name="twitter:image" content="https://blog.csdn.net/imgs/svm/general_min.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://blog.csdn.net/LoseInVain/2018/10/21/SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释/">
+
+
+
+
+
+  <title>SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释 | 机器学习杂货铺2号店</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/FesianXu"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png" alt="Follow Me on GitHub"></a>
+	
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">机器学习杂货铺2号店</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Machine Learning Store Num. 2. The records of my learning and life chores.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.csdn.net/LoseInVain/2018/10/21/SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="徐飞翔(Fesian Xu)">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/site_imgs/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="机器学习杂货铺2号店">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-21T12:16:07+08:00">
+                2018-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/21/SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/10/21/SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/21/SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释/" class="leancloud_visitors" data-flag-title="SVM沉思录3——拉格朗日乘数法和KKT条件的直观解释">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><font size="6"><b>前言</b></font><br><strong>在SVM的推导中，出现了核心的一个最优化问题，这里我们简单介绍下最优化问题，特别是带有约束的最优化问题，并且引入拉格朗日乘数法和广义拉格朗日乘数法，介绍并且直观解释了KKT条件，用于解决带约束的最优化问题。本人无专业的数学学习背景，只能在直观的角度上解释这个问题，如果有数学专业的朋友，还望不吝赐教。</strong><br><strong>如有误，请联系指正。转载请注明出处。</strong><br><em>联系方式：</em><br><strong>e-mail</strong>: <a href="FesianXu@163.com"><code>FesianXu@163.com</code></a><br><strong>QQ</strong>: <code>973926198</code><br><strong>github</strong>: <a href="https://github.com/FesianXu" target="_blank" rel="noopener"><code>https://github.com/FesianXu</code></a><br><strong>有关代码开源</strong>: <a href="https://github.com/FesianXu/AI_Blog/tree/master/SVM%E7%9B%B8%E5%85%B3" target="_blank" rel="noopener">click</a></p>
+<hr>
+<h1 id="最优化问题"><a href="#最优化问题" class="headerlink" title="最优化问题"></a>最优化问题</h1><p>我们在高中，包括在高数中都会经常遇到求解一个函数的最小值，最大值之类的问题，这类问题就是属于最优化问题。比如给出下列一个不带有约束的最优化问题：</p>
+<script type="math/tex; mode=display">
+\min_{x} 3x^2+4x+5, x \in R
+\tag{1.1}</script><p>其中的$3x^2+4x+5$我们称为<strong>目标函数(objective  function)</strong>。这样的问题，直接利用<strong>罗尔定理（Rolle’s theorem）</strong>求出其鞍点，又因为其为凸函数而且可行域是整个$R$，求出的鞍点便是最值点，这个是对于无约束最优化问题的解题套路。<br>如果问题带有约束条件，那么就变得不一样了，如：</p>
+<script type="math/tex; mode=display">
+\min_{x, y} 3xy^2 \\
+s.t.　　　4x+5y = 10
+\tag{1.2}</script><p>因为此时的约束条件是<strong>仿射函数（affine function）</strong><sup><a href="#fn_1" id="reffn_1">1</a></sup>，所以可以利用换元法将$x$表示为$y$的函数，从而将目标函数变为无约束的形式，然后利用罗尔定理便可以求出最值点了。<br>然而如果约束条件一般化为$g(x, y) = c$，那么$x$就不一定可以用其他变量表示出来了，这个时候就要利用<strong>拉格朗日乘数法(Lagrange multipliers )</strong>了。</p>
+<hr>
+<h1 id="拉格朗日乘数法-Lagrange-multipliers"><a href="#拉格朗日乘数法-Lagrange-multipliers" class="headerlink" title="拉格朗日乘数法(Lagrange multipliers)"></a>拉格朗日乘数法(Lagrange multipliers)</h1><p>我们先一般化一个二元最优化问题为$(2.1)$形式：</p>
+<script type="math/tex; mode=display">
+\min_{x, y} f(x, y) \\
+s.t.　　g(x, y) = c
+\tag{2.1}</script><p>将目标函数$f(x, y)$和等式约束条件$g(x, y)=c$画出来就如下图所示：<br><img src="/imgs/svm/general_min.png" alt="general_min"></p>
+<p>其中的$f(x, y)$虚线为等高线，而红线为$g(x, y)=c$这个约束函数曲线与$f(x,y)$的交点的连线在$x-y平面$的映射。其中，假设有$d_3 &gt; d_2 &gt; d_1$， $d_1$点为最小值点（最优值点）。<strong>从直观上可以发现，在$g(x,y)=c$与$f(x,y)$的非最优化交点$A$,$B$,$C$,$D$上，其$f(x,y)$和$g(x,y)$的法线方向并不是共线的，注意，这个相当关键，因为如果不是共线的，说明$g(x,y)=c$与$f(x,y)$的交点中，还存在可以取得更小值的点存在。对于A点来说，B点就是更为小的存在。因此，我们从直觉上推论出只有当$g(x,y)=c$与$f(x,y)$的法线共线时，才是最小值点的候选点（鞍点）。推论到多元变量的问题的时候，法线便用梯度表示</strong>。于是，我们有原问题取得最优值的必要条件：</p>
+<script type="math/tex; mode=display">
+\nabla f(x,y) = \nabla \lambda (g(x, y)-c)
+\tag{2.2}</script><p>$(2.2)$其中的$\lambda$表示两个梯度共线。<br>可以简单的变形为</p>
+<script type="math/tex; mode=display">
+\nabla L(x, y, \lambda) = \nabla f(x,y) - \nabla \lambda (g(x, y)-c) = 0
+\tag{2.3}</script><p>让我们去掉梯度算子，得出</p>
+<script type="math/tex; mode=display">
+L(x, y, \lambda) = f(x, y) - \lambda(g(x, y) - c)
+\tag{2.4}</script><p>这个时候$\lambda$取个负号也是不影响的，所以式子$(2.4)$通常写作：</p>
+<script type="math/tex; mode=display">
+L(x, y, \lambda) = f(x, y) + \lambda(g(x, y) - c)
+\tag{2.5}</script><p>看！我们得出了我们高数中经常见到的<strong>等式约束下的拉格朗日乘数函数的表示方法</strong>。</p>
+<h2 id="多约束的拉格朗日乘数法"><a href="#多约束的拉格朗日乘数法" class="headerlink" title="多约束的拉格朗日乘数法"></a>多约束的拉格朗日乘数法</h2><p>以上，我们讨论的都是单约束的拉格朗日乘数法，当存在多个等式约束时（其实不等式约束也是一样的），我们进行一些推广。先一般化一个二元多约束最小化问题：</p>
+<script type="math/tex; mode=display">
+\min_{x, y} f(x, y) \\
+s.t.　　g_i(x, y) = 0, i = 1,2, \cdots,N
+\tag{2.6}</script><p>对于每个目标函数和约束配对，我们有:</p>
+<script type="math/tex; mode=display">
+L_1(x ,y ,\lambda_1) = f(x,y)+\lambda_1 g_1(x,y) \\
+\vdots \\
+L_N(x, y, \lambda_N) = f(x,y)+\lambda_N g_N(x,y)</script><p>将上式相加有：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^N L_i(x,y,\lambda_i)=N f(x, y)+\sum_{i=1}^N \lambda_ig_i(x,y)
+\tag{2.7}</script><p>定义多约束的拉格朗日函数为：</p>
+<script type="math/tex; mode=display">
+L(x,y,\lambda) = f(x,y)+\frac{1}{N} \sum_{i=1}^N \lambda_ig_i(x,y)
+\tag{2.8}</script><p>因为$\lambda_i$是常数，表示共线的含义而已，所以乘上一个常数$\frac{1}{N}$也不会有任何影响，我们仍然用$\lambda_i$表示，因此式子$(2.8)$变成：</p>
+<script type="math/tex; mode=display">
+L(x,y,\lambda) = f(x,y)+\sum_{i=1}^N \lambda_ig_i(x,y)
+\tag{2.9}</script><p><strong>这就是多约束拉格朗日乘数法的函数表达形式。</strong></p>
+<h2 id="一个计算例子"><a href="#一个计算例子" class="headerlink" title="一个计算例子"></a>一个计算例子</h2><p>让我们举一个单约束的拉格朗日乘数法的计算例子，例子来源于引用3。<br>给出一个<strong>最大化任务</strong>：</p>
+<script type="math/tex; mode=display">
+\max_{x,y} xy^2 \\
+s.t.　　g(x,y):x^2+y^2-3=0
+\tag{2.10}</script><p>图像如：<br><img src="/imgs/svm/lm_example.png" alt="lm_example"></p>
+<p>只有一个约束，使用一个乘子$\lambda$，有拉格朗日函数：</p>
+<script type="math/tex; mode=display">
+L(x,y,\lambda)=xy^2+\lambda(x^2+y^2-3)</script><p>按照条件求解候选点：</p>
+<script type="math/tex; mode=display">
+\nabla_{x,y,\lambda} L(x,y,\lambda) = (\frac{\partial L}{\partial x}, \frac{\partial L}{\partial y}, \frac{\partial L}{\partial \lambda})=(2xy+2\lambda x, x^2+2 \lambda y, x^2+y^2-3)=0</script><p>有</p>
+<script type="math/tex; mode=display">
+x(y+\lambda)=0 \tag{i}</script><script type="math/tex; mode=display">
+x^2+2 \lambda y = 0 \tag{ii}</script><script type="math/tex; mode=display">
+x^2+y^2=3 \tag{iii}</script><p>根据式子$(i)(ii)(iii)$， 解得有：</p>
+<script type="math/tex; mode=display">
+(\pm \sqrt{2}, 1, -1); (\pm \sqrt{2}, -1, 1); (0, \pm \sqrt{3}, 0)</script><p>代入$f(x,y)$，得到：2， -2， 0，也就是我们需要求得的最大值，最小值。可以从图中看出，<strong>我们观察到其等高线与约束投影线的确是相切的。</strong></p>
+<hr>
+<h1 id="广义拉格朗日乘数法-Generalized-Lagrange-multipliers"><a href="#广义拉格朗日乘数法-Generalized-Lagrange-multipliers" class="headerlink" title="广义拉格朗日乘数法(Generalized Lagrange multipliers)"></a>广义拉格朗日乘数法(Generalized Lagrange multipliers)</h1><p>上面我们的拉格朗日乘数法解决了等式约束的最优化问题，但是在<strong>存在不等式约束的最优化问题</strong>（包括我们SVM中需要求解的最优化问题）上，普通的拉格朗日乘数法并不能解决，因此学者提出了<strong>广义拉格朗日乘数法（Generalized Lagrange multipliers）</strong>， 用于解决含有不等式约束的最优化问题。这一章，我们谈一谈广义拉格朗日乘数法。</p>
+<p>首先，我们先一般化我们的问题，规定一个二元标准的带有不等式约束的最小化问题(当然可以推广到多元的问题)，如：</p>
+<script type="math/tex; mode=display">
+\min_{x, y} f(x, y) \\
+s.t.　　g_i(x, y) \leq 0, i = 1,2,\cdots,N \\
+h_i(x, y) = 0, i = 1,2, \cdots, M
+\tag{3.1}</script><p>类似于拉格朗日乘数法，参照式子$(2.9)$，我们使用$\alpha_i$和$\beta_i$作为等式约束和不等式约束的拉格朗日乘子，得出下式：</p>
+<script type="math/tex; mode=display">
+L(x, y, \alpha, \beta) = f(x, y)+\sum_{i=1}^N \alpha_ig_i(x ,y)+\sum_{i=1}^M \beta_i h_i(x, y)
+\tag{3.2}</script><p><strong>KKT条件（Karush–Kuhn–Tucker conditions）</strong>指出，当满足以下几个条件的时候，其解是问题最优解的候选解(摘自wikipedia)。</p>
+<ol>
+<li><strong>Stationarity</strong><ul>
+<li>对于最小化问题就是：<br>$\nabla f(x,y)+\sum_{i=1}^N \alpha_i \nabla g_i(x ,y)+\sum_{i=1}^M \beta_i \nabla h_i(x, y) = 0 \tag{3.3}$</li>
+<li>对于最大化问题就是：<br>$\nabla f(x,y)-(\sum_{i=1}^N \alpha_i \nabla g_i(x ,y)+\sum_{i=1}^M \beta_i \nabla h_i(x, y)) = 0 \tag{3.4}$</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li><p><strong>Primal feasibility</strong></p>
+<ul>
+<li>$g_i(x,y) \leq0, i = 1,2,\cdots,N \tag{3.5}$</li>
+<li>$h_i(x, y) = 0, i = 1,2,\cdots,M \tag{3.6}$</li>
+</ul>
+</li>
+<li><p><strong>Dual feasibility</strong></p>
+<ul>
+<li>$\alpha_i \geq 0, i = 1,2, \cdots, N \tag{3.7}$</li>
+</ul>
+</li>
+<li><p><strong>Complementary slackness</strong></p>
+<ul>
+<li>$\alpha_i g_i(x, y) = 0, i = 1,2,\cdots,N \tag{3.8}$</li>
+</ul>
+</li>
+</ol>
+<p>其中的第一个条件和我们的拉格朗日乘数法的含义是相同的，就是梯度共线的意思；而第二个条件就是主要约束条件，自然是需要满足的；<strong>有趣的和值得注意的是第三个和第四个条件，接下来我们探讨下这两个条件，以及为什么不等式约束会多出这两个条件。</strong></p>
+<hr>
+<p>为了接下来的讨论方便，我们将N设为3，并且去掉等式约束，这样我们的最小化问题的广义拉格朗日函数就变成了：</p>
+<script type="math/tex; mode=display">
+L(x, y, \alpha, \beta) = f(x, y)+\sum_{i=1}^3 \alpha_ig_i(x ,y)
+\tag{3.9}</script><p>绘制出来的示意图如下所示：<br><img src="/imgs/svm/general_lagrange_multipliers.png" alt="general_lagrange_multipliers"></p>
+<p>其中$d_i &gt; d_j, when　i &gt; j$，而蓝线为最优化寻路过程。</p>
+<p>让我们仔细观察式子$(3.7)$和$(3.8)$，我们不难发现，因为$\alpha_i \geq 0$而$g_i(x, y) \leq 0$，并且需要满足$\alpha_i g_i(x, y) = 0$，所以$\alpha_i$和$g_i(x,y)$之中必有一个为0，那为什么会这样呢？</p>
+<hr>
+<p>我们从上面的示意图入手理解并且记好公式$(3.3)$。让我们假设初始化一个点A， 这个点A明显不处于最优点，也不在可行域内，可知$g_2(x,y)&gt;0$违背了$(3.5)$，为了满足约束$(3.8)$，有$\alpha_2=0$，导致$\alpha_2 \nabla g_2(x,y)=0$，而对于$i=1,3$，因为满足约束条件而且$g_1(x,y) \neq 0, g_3(x,y) \neq 0$，所以$\alpha_1 = 0, \alpha_3 = 0$。这样我们的式子$(3.3)$就只剩下$\nabla f(x,y)$，<strong>因此对着$\nabla f(x,y)$进行优化，也就是沿着$f(x,y)$梯度方向下降即可，不需考虑其他的条件（因为还完全处于可行域之外）</strong>。因此，A点一直走啊走，从A到B，从B到C，从C到D，这个时候因为D点满足$g_2(x,y)=0$，因此$\alpha_2 &gt; 0$，所以$\alpha_2\nabla g_2(x,y) \neq 0$，因此$(3.3)$就变成了$\nabla f(x,y)+\alpha_2\nabla g_2(x,y)$所以在优化下一个点E的时候，就会考虑到需要满足约束$g_2(x,y) \leq 0$的条件，朝着向$g_2(x,y)$减小，而且$f(x,y)$减小的方向优化。因此下一个优化点就变成了E点，而不是G点。因此没有约束的情况下其优化路径可能是$A \rightarrow B \rightarrow C \rightarrow D \rightarrow G \rightarrow H$，而添加了约束之后，其路径变成了$A \rightarrow B \rightarrow C \rightarrow D \rightarrow E \rightarrow F$。</p>
+<hr>
+<p>这就是为什么KKT条件引入了条件3和条件4，就是为了在满足不等式约束的情况下对目标函数进行优化。让我们记住这个条件，因为这个条件中某些$\alpha_i=0$的特殊性质，将会在SVM中广泛使用，而且正是这个性质定义了<strong>支持向量(SV)</strong>。</p>
+<hr>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><ol>
+<li><a href="https://www.zhihu.com/question/38586401" target="_blank" rel="noopener">拉格朗日乘子法如何理解？ 知乎</a></li>
+<li><a href="https://book.douban.com/subject/10590856/" target="_blank" rel="noopener">《统计学习方法》 豆瓣</a></li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzI4MDYzNzg4Mw==&amp;mid=2247486230&amp;idx=1&amp;sn=41c3bcbf00b43535e912af1dab2704f5&amp;chksm=ebb433c2dcc3bad45fa784314d4ea6a464538ff19b937b58bd99f12b43ec3c3cf01a269f9124&amp;mpshare=1&amp;scene=23&amp;srcid=11211sArM7yh9Xf0pkvnWaJA#rd" target="_blank" rel="noopener">《【直观详解】拉格朗日乘法和KKT条件》  微信公众号</a></li>
+<li><a href="http://blog.csdn.net/on2way/article/details/47729419">《解密SVM系列（一）：关于拉格朗日乘子法和KKT条件》 CSDN</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Karush%E2%80%93Kuhn%E2%80%93Tucker_conditions" target="_blank" rel="noopener">Karush–Kuhn–Tucker conditions wikipedia</a></li>
+</ol>
+<blockquote id="fn_1">
+<sup>1</sup>. 最高次数为1的多项式，形如 $f(x) = AX+B$，其中$X$是$m \times k$的仿射矩阵，其与线性函数的区别就是，线性函数是$f(x) = AX$没有偏置项$B$。<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/site_imgs/wechat.png" alt="徐飞翔(Fesian Xu) WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/site_imgs/alipay.jpg" alt="徐飞翔(Fesian Xu) Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+	
+	<div>
+    
+    <div>
+    
+        <div style="text-align:center;color: #4B0082;font-size:18px;">
+            -------------The End
+            <i class="fa fa-paw"></i>
+            Thanks For Your Reading-------------
+        </div>
+    
+</div>
+
+    
+    </div>
+	
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
+          
+            <a href="/tags/SVM/" rel="tag"><i class="fa fa-tag"></i> SVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/21/SVM沉思录2——SVM的拉格朗日函数表示以及其对偶问题/" rel="next" title="SVM沉思录2——SVM的拉格朗日函数表示以及其对偶问题">
+                <i class="fa fa-chevron-left"></i> SVM沉思录2——SVM的拉格朗日函数表示以及其对偶问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/21/SVM沉思录4——最优化问题的对偶问题/" rel="prev" title="SVM沉思录4——最优化问题的对偶问题">
+                SVM沉思录4——最优化问题的对偶问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+
+</script>
+
+
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/site_imgs/avatar.png" alt="徐飞翔(Fesian Xu)">
+            
+              <p class="site-author-name" itemprop="name">徐飞翔(Fesian Xu)</p>
+              <p class="site-description motion-element" itemprop="description">The master student in UESTC, member of Center of Future Media, Human-Robotic Interface(CFM-HRI) research Group. Researching the multi-view action recognition based on deep learning.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/FesianXu" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:FesianXu@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://stackoverflow.com/fesianxu" target="_blank" title="StackOverflow">
+                      
+                        <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="973926198" target="_blank" title="QQ">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>QQ</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                相关研究组织链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/loseinvain" title="机器学习杂货铺1号店" target="_blank">机器学习杂货铺1号店</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cfm.uestc.edu.cn/" title="未来媒体研究中心" target="_blank">未来媒体研究中心</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://github.com/HRI-UESTC" title="HRI研究小组" target="_blank">HRI研究小组</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#最优化问题"><span class="nav-number">1.</span> <span class="nav-text">最优化问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拉格朗日乘数法-Lagrange-multipliers"><span class="nav-number">2.</span> <span class="nav-text">拉格朗日乘数法(Lagrange multipliers)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#多约束的拉格朗日乘数法"><span class="nav-number">2.1.</span> <span class="nav-text">多约束的拉格朗日乘数法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个计算例子"><span class="nav-number">2.2.</span> <span class="nav-text">一个计算例子</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#广义拉格朗日乘数法-Generalized-Lagrange-multipliers"><span class="nav-number">3.</span> <span class="nav-text">广义拉格朗日乘数法(Generalized Lagrange multipliers)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">4.</span> <span class="nav-text">引用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">徐飞翔(Fesian Xu)</span>
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv">No Counting Yet</span>
+</span>
+</div>
+
+
+
+
+ 
+
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+
+
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共21.9k字</span>
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+      <style>
+        a.gitment-editor-footer-tip { display: none; }
+        .gitment-container.gitment-footer-container { display: none; }
+      </style>
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'FesianXu',
+            repo: 'git@github.com:FesianXu/FesianXu.github.io.git',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '46843ce9ee419af7135c0bceaf4be257522c4761',
+            
+                client_id: 'b1c4e5e986f1c6e8b418'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('5');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("8uULmK512xn0iKMAb4rKJBE4-gzGzoHsz", "oVFlc9OClEfBzIfN8GpjNp3l");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+  </script>
+  
+
+</body>
+</html>
