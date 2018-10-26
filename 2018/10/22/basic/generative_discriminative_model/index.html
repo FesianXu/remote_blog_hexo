@@ -456,14 +456,14 @@
 <p><strong> 机器学习中有两种大类的模型，分别是生成模型和判别模型，其分别代表了不同的预测思想，我们这里讨论一下两者的异同。</strong><br><strong>如有谬误，请联系指正。转载请注明出处。</strong></p>
 <p><em>联系方式：</em><br><strong>e-mail</strong>: <code>FesianXu@163.com</code><br><strong>QQ</strong>: <code>973926198</code><br><strong>github</strong>: <code>https://github.com/FesianXu</code></p>
 <hr>
-<h1 id="机器学习的目标"><a href="#机器学习的目标" class="headerlink" title="机器学习的目标"></a>机器学习的目标</h1><p>首先，我们先要讨论整个机器学习的目标，在应用中最常见到的<strong>分类问题</strong>中，我们需要根据现有样本$x_i \in R^n$预测出其标签$y_i \in { 0,1,\dots,m}$，因此我们可以选择学习出<strong>条件概率</strong>$P(y_i|x_i), x_i \in R^n, y_i \in {0,1,\dots.m}$，如<strong>softmax分类器</strong>，<strong>logistic回归</strong>，亦是或者学习出样本特征$x_i$到标签$y_i$的直接映射（比起前者没有概率，而是直接的一个结果），如<strong>感知器Perceptron</strong>，<strong>SVM支持向量机</strong>。学习出了条件概率或者是其映射之后，我们就可以根据其样本特征$x_i$预测其标签了$y_i$。</p>
+<h1 id="机器学习的目标"><a href="#机器学习的目标" class="headerlink" title="机器学习的目标"></a>机器学习的目标</h1><p>首先，我们先要讨论整个机器学习的目标，在应用中最常见到的<strong>分类问题</strong>中，我们需要根据现有样本$x_i \in R^n$预测出其标签$y_i \in \{ 0,1,\dots,m\}$，因此我们可以选择学习出<strong>条件概率</strong>$P(y_i|x_i), x_i \in R^n, y_i \in \{0,1,\dots.m\}$，如<strong>softmax分类器</strong>，<strong>logistic回归</strong>，亦是或者学习出样本特征$x_i$到标签$y_i$的直接映射（比起前者没有概率，而是直接的一个结果），如<strong>感知器Perceptron</strong>，<strong>SVM支持向量机</strong>。学习出了条件概率或者是其映射之后，我们就可以根据其样本特征$x_i$预测其标签了$y_i$。</p>
 <hr>
 <h1 id="生成模型-or-判别模型"><a href="#生成模型-or-判别模型" class="headerlink" title="生成模型 or 判别模型"></a>生成模型 or 判别模型</h1><p>这里，我们直接给出两者的定义：</p>
 <p><strong>判别模型</strong>： 模型直接学习出条件概率$P(y_i|x_i)$，模型包括<strong>kNN，感知机，决策树，逻辑回归，最大熵模型，SVM，提升方法，条件随机场，神经网络，···</strong></p>
 <p><strong>生成模型</strong>： 模型学习出联合概率分布$P(x,y)$，然后根据贝叶斯公式，得出条件概率分布$P(y|x) = \frac{P(x,y)}{\sum_iP(x,y_i)}$，模型包括<strong>朴素贝叶斯法、隐马尔科夫模型、混合高斯模型、AODE、Latent Dirichlet allocation（unsup）、Restricted Boltzmann Machine，···</strong></p>
 <hr>
 <p>于是，两者的区别就是是否需要学习出联合概率分布$P(x,y)$。<br>我们这里举一个维基百科里面的例子：</p>
-<p>假如我们现在有四个样本：$(x,y)={(0,0), (0,0), (1,0), (1,1)}$</p>
+<p>假如我们现在有四个样本：$(x,y)=\{(0,0), (0,0), (1,0), (1,1)\}$</p>
 <p>在判别模型眼中：<br>$P(Y|X)$</p>
 <div class="table-container">
 <table>
@@ -729,7 +729,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -903,7 +903,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共41.1k字</span>
+  <span class="post-count">博客全站共41.4k字</span>
 </div>
         
 

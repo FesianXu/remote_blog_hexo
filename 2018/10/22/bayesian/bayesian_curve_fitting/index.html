@@ -505,7 +505,7 @@ p(\mathbf{w}|\alpha) = \mathcal{N}(\mathbf{w}|\mathbf{0},\alpha^{-1}\mathbf{I}) 
 \tag{2.1 对参数的先验假设}</script><p>其中$M$为多项式次数。如同$\alpha$这样的，控制着整个模型的超空间形状的参数，称之为<strong>超参数(hyperparameters)</strong>。<br>引入了这个先验假设后，我们模型的后验：</p>
 <script type="math/tex; mode=display">
 p(\mathbf{w}|\mathbf{x},\mathbf{t},\alpha,\beta) \propto p(\mathbf{t}|\mathbf{x},\mathbf{w},\beta)p(\mathbf{w}|\alpha)
-\tag{2.2}</script><p>我们现在可以在给定了训练集${\mathbf{x},\mathbf{t}}$的情况下，通过找到一个最可能的$\mathbf{w}$来估计出$\mathbf{w}$。换句话说，我们可以最大化这个后验概率，这个技术称之为<strong>最大后验概率法(MAximum Posterior,MAP)</strong>。取(2.2)的负对数，我们有:</p>
+\tag{2.2}</script><p>我们现在可以在给定了训练集$\{\mathbf{x},\mathbf{t}\}$的情况下，通过找到一个最可能的$\mathbf{w}$来估计出$\mathbf{w}$。换句话说，我们可以最大化这个后验概率，这个技术称之为<strong>最大后验概率法(MAximum Posterior,MAP)</strong>。取(2.2)的负对数，我们有:</p>
 <script type="math/tex; mode=display">
 \ln{p(\mathbf{w}|\mathbf{x},\mathbf{t},\alpha,\beta)} \propto
 \ln{p(\mathbf{t}|\mathbf{x},\mathbf{w},\beta)}+\ln{p(\mathbf{w}|\alpha)}
@@ -514,7 +514,7 @@ p(\mathbf{w}|\mathbf{x},\mathbf{t},\alpha,\beta) \propto p(\mathbf{t}|\mathbf{x}
 \frac{\beta}{2}\sum_{n=1}^N \{y(x_n,\mathbf{w})-t_n\}^2+\frac{\alpha}{2}\mathbf{w}^T\mathbf{w} \\
 \Rightarrow \frac{1}{2}\sum_{n=1}^N \{y(x_n,\mathbf{w})-t_n\}^2+\frac{\alpha}{\beta}\mathbf{w}^T\mathbf{w}</script><p>令$\gamma=\dfrac{\alpha}{\beta}$，于是我们就有了在正则项中最常见到的L2正则项$\dfrac{\gamma}{2}\mathbf{w}^T\mathbf{w}$了。于是我们得到结论：<br>$\nabla$<strong>在贝叶斯理论中，L2正则项是在参数$\mathbf{w}$符合0均值高斯分布的情况下推导出来的，其系数$\gamma$决定了正则的程度。</strong>$\nabla$</p>
 <hr>
-<h1 id="最终一步，贝叶斯曲线拟合"><a href="#最终一步，贝叶斯曲线拟合" class="headerlink" title="最终一步，贝叶斯曲线拟合"></a>最终一步，贝叶斯曲线拟合</h1><p>在上一步中，虽然我们根据最大后验法估计出了$\mathbf{w}$，但是对于曲线拟合来说，这并不是我们的最终目标，我们的最终目标是估计出目标值$\hat{\mathbf{t}}$出来。在完全的贝叶斯处理过程中，我们的估计出来的$\mathbf{w}$是一个分布，为了得到预测值$\hat{\mathbf{t}}$，我们要用概率的加法和乘法法则，对所有可能的$\mathbf{w}$进行积分，得到目标值。这个操作将在贝叶斯理论中一直沿用。<br>具体到我们的曲线拟合的例子，当我们给定了训练集${\mathbf{x},\mathbf{t}}$的时候，当输入一个新的输入$x$的时候，我们期望得到其预测值$t$。也就是说我们需要得出$p(t|x,\mathbf{x},\mathbf{t})$，由概率的基本和积定理有：</p>
+<h1 id="最终一步，贝叶斯曲线拟合"><a href="#最终一步，贝叶斯曲线拟合" class="headerlink" title="最终一步，贝叶斯曲线拟合"></a>最终一步，贝叶斯曲线拟合</h1><p>在上一步中，虽然我们根据最大后验法估计出了$\mathbf{w}$，但是对于曲线拟合来说，这并不是我们的最终目标，我们的最终目标是估计出目标值$\hat{\mathbf{t}}$出来。在完全的贝叶斯处理过程中，我们的估计出来的$\mathbf{w}$是一个分布，为了得到预测值$\hat{\mathbf{t}}$，我们要用概率的加法和乘法法则，对所有可能的$\mathbf{w}$进行积分，得到目标值。这个操作将在贝叶斯理论中一直沿用。<br>具体到我们的曲线拟合的例子，当我们给定了训练集$\{\mathbf{x},\mathbf{t}\}$的时候，当输入一个新的输入$x$的时候，我们期望得到其预测值$t$。也就是说我们需要得出$p(t|x,\mathbf{x},\mathbf{t})$，由概率的基本和积定理有：</p>
 <script type="math/tex; mode=display">
 p(t|x,\mathbf{x},\mathbf{t}) = \int p(t|x,\mathbf{w})p(\mathbf{w}|\mathbf{x},\mathbf{t}) \rm{d} \mathbf{w}
 \tag{3.1}</script><p>因为采用了共轭先验[6]假设，因此我们的后验概率同样是一个高斯分布。也即是：</p>
@@ -743,7 +743,7 @@ s^2(x) = \beta^{-1}+\phi(x)^T\mathbf{S}\phi(x)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -917,7 +917,7 @@ s^2(x) = \beta^{-1}+\phi(x)^T\mathbf{S}\phi(x)
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共41.1k字</span>
+  <span class="post-count">博客全站共41.4k字</span>
 </div>
         
 

@@ -476,9 +476,9 @@
 <hr>
 <p>让我们考虑一个情景：</p>
 <blockquote>
-<p>给你$n$个样本作为已知的训练集，$\mathbf{X}={\mathbf{x}_1,\mathbf{x}_2,\cdots,\mathbf{x}_n}$，其对应的标签为，$\mathbf{Y}={\mathbf{y}_1}$，先给你一个新的样本$\mathbf{x}$，其需要预测其标签。</p>
+<p>给你$n$个样本作为已知的训练集，$\mathbf{X}=\{\mathbf{x}_1,\mathbf{x}_2,\cdots,\mathbf{x}_n\}$，其对应的标签为，$\mathbf{Y}=\{\mathbf{y}_1\}$，先给你一个新的样本$\mathbf{x}$，其需要预测其标签。</p>
 </blockquote>
-<p>这个就是基本的分类问题的情景，为了简便，不妨将这里的标签看成是二分类标签$\mathbf{y}_i \in {+1,-1}$。我们可以将这个分类问题等价为求$p(\omega_1|\mathbf{x})$和$p(\omega_2|\mathbf{x})$的概率大小，一般来说，如果$p(\omega_1|\mathbf{x}) &gt; p(\omega_2|\mathbf{x})$，那么就可以将其判断为第一类了对吧！反之亦然。</p>
+<p>这个就是基本的分类问题的情景，为了简便，不妨将这里的标签看成是二分类标签$\mathbf{y}_i \in \{+1,-1\}$。我们可以将这个分类问题等价为求$p(\omega_1|\mathbf{x})$和$p(\omega_2|\mathbf{x})$的概率大小，一般来说，如果$p(\omega_1|\mathbf{x}) &gt; p(\omega_2|\mathbf{x})$，那么就可以将其判断为第一类了对吧！反之亦然。</p>
 <p>因为有概率论中的贝叶斯公式，我们有：</p>
 <script type="math/tex; mode=display">
 p(\omega_i|\mathbf{x}) = \frac{p(\omega_i,\mathbf{x})}{p(\mathbf{x})}=\frac{p(\omega_i)p(\mathbf{x}|\omega_i)}{\sum_{j=1}^M p(\omega_i)p(\mathbf{x}|\omega_i)}
@@ -762,7 +762,7 @@ R(\mathcal{R}_k|\mathbf{x}) = \sum_j  L_{k,j}p(\mathcal{C}_k|\mathbf{x})</script
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -936,7 +936,7 @@ R(\mathcal{R}_k|\mathbf{x}) = \sum_j  L_{k,j}p(\mathcal{C}_k|\mathbf{x})</script
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共41.1k字</span>
+  <span class="post-count">博客全站共41.4k字</span>
 </div>
         
 

@@ -459,7 +459,7 @@
 <p><strong>如有谬误，请联系指正。转载请注明出处。</strong></p>
 <p><em>联系方式：</em><br><strong>e-mail</strong>: <code>FesianXu@163.com</code><br><strong>QQ</strong>: <code>973926198</code><br><strong>github</strong>: <code>https://github.com/FesianXu</code></p>
 <hr>
-<h1 id="分类问题"><a href="#分类问题" class="headerlink" title="分类问题"></a>分类问题</h1><p>我们在之前的文章中已经介绍过分类问题了，简单的说就是给定一个样本$\bf{x} \in \mathbb{R}^n$，将其划分到有限的标签集$\bf{Y} \in {0,1,\cdots,m}$中。通常来说，我们可以将整个分类问题划分为两个独立的过程，分别是<strong>推理（inference）</strong>和<strong>决策(decision)</strong>阶段。在推理阶段，我们通过已有的训练集，学习到后验概率$p(\mathcal{C}_k|\bf{x})$，或者也可以通过学习联合概率分布$p(\mathcal{C}_k, \bf{x})$，然后也可以得到后验概率。而接下来，在决策阶段，就根据这个后验概率，对样本的类别进行判断决策。这个决策过程可以参考文章[1]的讨论。</p>
+<h1 id="分类问题"><a href="#分类问题" class="headerlink" title="分类问题"></a>分类问题</h1><p>我们在之前的文章中已经介绍过分类问题了，简单的说就是给定一个样本$\bf{x} \in \mathbb{R}^n$，将其划分到有限的标签集$\bf{Y} \in \{0,1,\cdots,m\}$中。通常来说，我们可以将整个分类问题划分为两个独立的过程，分别是<strong>推理（inference）</strong>和<strong>决策(decision)</strong>阶段。在推理阶段，我们通过已有的训练集，学习到后验概率$p(\mathcal{C}_k|\bf{x})$，或者也可以通过学习联合概率分布$p(\mathcal{C}_k, \bf{x})$，然后也可以得到后验概率。而接下来，在决策阶段，就根据这个后验概率，对样本的类别进行判断决策。这个决策过程可以参考文章[1]的讨论。</p>
 <p><strong>注意到，很多时候，这两个过程可以合在一起，将问题简化为成：学习一个映射$f(\bf{x}) \in \mathbb{R}^m, \bf{x} \in \mathbb{R}^n$，直接将样本映射到类别标签。</strong>这个过程中，将不会涉及到任何的后验概率等，而是直接得出预测结果，这个函数因此称之为<strong>判别函数(Discriminant function)</strong>。[2] page 43</p>
 <p>事实上，这些讨论过的方法都可以用来解决分类问题，并且在实际应用中都有所应用，我们按照复杂程度进行降序排列之后，有：</p>
 <ol>
@@ -694,7 +694,7 @@ p(\mathbf{x}) = \sum_{k} p(\mathbf{x}|\mathcal{C}_k)p(\mathcal{C}_k)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -868,7 +868,7 @@ p(\mathbf{x}) = \sum_{k} p(\mathbf{x}|\mathcal{C}_k)p(\mathcal{C}_k)
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共41.1k字</span>
+  <span class="post-count">博客全站共41.4k字</span>
 </div>
         
 

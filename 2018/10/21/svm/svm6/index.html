@@ -505,7 +505,7 @@ s.t. \ \sum_{i=1}^N\alpha_iy_i=0 \\
 </blockquote>
 <p>嗯，定理很长，人生很短，这个定理说人话就是，如果这个核函数$\mathcal{k}(\cdot, \cdot)$是一个对称半正定的，并且其是个对称函数（度量的基本条件），那么这个核函数就肯定对应了某个样本与样本之间的度量，其关系正如(3.2)所示，因此隐式地定义出了样本的映射函数$\phi(\cdot)$，因此是个有效的核函数。</p>
 <p>诶，但是对称半正定不是矩阵才能判断吗？这里的核函数是个函数耶？嗯…也不尽然，休息下，我们下一节继续吧。</p>
-<h2 id="无限维向量与希尔伯特空间"><a href="#无限维向量与希尔伯特空间" class="headerlink" title="无限维向量与希尔伯特空间"></a>无限维向量与希尔伯特空间</h2><p>先暂时忘记之前的东西吧，清清脑袋，轻装上阵。我们在以前学习过得向量和矩阵都是有限维度的，那么是否存在<strong>无限维</strong>的向量和矩阵呢？其实，<strong>函数</strong>正是可以看成<strong>无限维的向量</strong>，想法其实很简单，假如有一个数值函数$f:x \rightarrow y$，假设其定义域是整个实数，如果对应每一个输入，都输出一个输出值，我们可以把所有输出值排列起来，也就形成了一个无限维的向量，表达为${y}^{\infty}_i$。</p>
+<h2 id="无限维向量与希尔伯特空间"><a href="#无限维向量与希尔伯特空间" class="headerlink" title="无限维向量与希尔伯特空间"></a>无限维向量与希尔伯特空间</h2><p>先暂时忘记之前的东西吧，清清脑袋，轻装上阵。我们在以前学习过得向量和矩阵都是有限维度的，那么是否存在<strong>无限维</strong>的向量和矩阵呢？其实，<strong>函数</strong>正是可以看成<strong>无限维的向量</strong>，想法其实很简单，假如有一个数值函数$f:x \rightarrow y$，假设其定义域是整个实数，如果对应每一个输入，都输出一个输出值，我们可以把所有输出值排列起来，也就形成了一个无限维的向量，表达为$\{y\}^{\infty}_i$。</p>
 <p>而核函数$\mathcal{k}(\mathbf{x}_i, \mathbf{x}_j)$作为一个双变量函数，就可以看成一个行列都是无限维的矩阵了。这样我们就可以定义其正定性了：</p>
 <script type="math/tex; mode=display">
 \int\int f(\mathbf{x})\mathcal{k}(\mathbf{x}, \mathbf{y})f(\mathbf{y}) \rm{d} \mathbf{x} \rm{d} \mathbf{y} \geq 0
@@ -521,14 +521,14 @@ s.t. \ \sum_{i=1}^N\alpha_iy_i=0 \\
 \tag{3.7}</script><p>因为特征值不为0，因此由(3.7)我们有:</p>
 <script type="math/tex; mode=display">
 < \Phi_1,  \Phi_2 > = \int \Phi_1(\mathbf{x}) \Phi_2(\mathbf{x}) \rm{d} \mathbf{x} = 0
-\tag{3.8}</script><p>也就是任意两个特征函数之间是<strong>正交</strong>(Orthogonal)的，一个核函数对应着无限个特征值${\lambda_i}_{i=1}^{\infty}$和无限个特征函数${\Phi_i}_{i=1}^{\infty}$，这个正是原先函数空间的一组正交基。</p>
+\tag{3.8}</script><p>也就是任意两个特征函数之间是<strong>正交</strong>(Orthogonal)的，一个核函数对应着无限个特征值$\{\lambda_i\}_{i=1}^{\infty}$和无限个特征函数$\{\Phi_i\}_{i=1}^{\infty}$，这个正是原先函数空间的一组正交基。</p>
 <p>回想到我们以前学习到的矩阵分解，我们知道我们的矩阵$A$可以表示为：</p>
 <script type="math/tex; mode=display">
 A = Q\Lambda Q^T
 \tag{3.9}</script><p>其中$Q$是$A$的特征向量组成的正交矩阵，$\Lambda$是对角矩阵。特征值$\Lambda_{i,i}$对应的特征向量是矩阵$Q$的第$i$列。我们看到在有限维空间中可以将矩阵表示为特征向量和特征值的组合表达。同样的，在无限维空间中，也可以定义这种分解，因此可以将核函数$\mathcal{k}(\cdot,\cdot)$表示为:</p>
 <script type="math/tex; mode=display">
 \mathcal{k}(\mathbf{x}, \mathbf{y}) = \sum_{i=0}^{\infty} \lambda_i \Phi_i(\mathbf{x}) \Phi_i(\mathbf{y})
-\tag{3.10}</script><p>重新整理下，将${\sqrt{\lambda_i}\Phi_i}_{i=1}^{\infty}$作为一组正交基，构建出一个空间$\mathcal{H}$。不难发现，这个空间是无限维的，如果再深入探讨，还会发现他是完备的内积空间，因此被称之为<strong>希尔伯特空间</strong>(Hilbert space)[13]。别被名字给唬住了，其实就是将欧几里德空间的性质延伸到了无限维而已。</p>
+\tag{3.10}</script><p>重新整理下，将$\{\sqrt{\lambda_i}\Phi_i\}_{i=1}^{\infty}$作为一组正交基，构建出一个空间$\mathcal{H}$。不难发现，这个空间是无限维的，如果再深入探讨，还会发现他是完备的内积空间，因此被称之为<strong>希尔伯特空间</strong>(Hilbert space)[13]。别被名字给唬住了，其实就是将欧几里德空间的性质延伸到了无限维而已。</p>
 <p>回到我们的希尔伯特空间，我们会发现，这个空间中的任意一个函数（向量）都可以由正交基进行线性表出：</p>
 <script type="math/tex; mode=display">
 f = \sum_{i=1}^{\infty} f_i \sqrt{\lambda_i} \Phi_i
@@ -575,7 +575,7 @@ f = (f_1, f_2, \cdots,)^T_{\mathcal{H}}
 \exp(-||x-y||^2&/2\sigma^2) \\
 &= \sum_{i=1}^{\infty} \sqrt{\dfrac{2^i \lambda}{i!}} \exp{(-\lambda x^2)}x \cdot \sqrt{\dfrac{2^i \lambda}{i!}} \exp{(-\lambda y^2)}y
 \end{aligned}
-\tag{3.20}</script><p>用序列$\mathbf{x} = {\sqrt{\dfrac{2^1 \lambda}{1!}} \exp{(-\lambda x^2)}x, \sqrt{\dfrac{2^2 \lambda}{2!}} \exp{(-\lambda x^2)}x, \cdots}$, $\mathbf{y}={\sqrt{\dfrac{2^1 \lambda}{1!}} \exp{(-\lambda y^2)}y, \sqrt{\dfrac{2^2 \lambda}{2!}} \exp{(-\lambda y^2)}y,\cdots}$<br>这两个都是无限维向量，也即是一个映射函数$\phi(\cdot)$。于是式子(3.20)可以改写为:</p>
+\tag{3.20}</script><p>用序列$\mathbf{x} = \{\sqrt{\dfrac{2^1 \lambda}{1!}} \exp{(-\lambda x^2)}x, \sqrt{\dfrac{2^2 \lambda}{2!}} \exp{(-\lambda x^2)}x, \cdots\}$, $\mathbf{y}=\{\sqrt{\dfrac{2^1 \lambda}{1!}} \exp{(-\lambda y^2)}y, \sqrt{\dfrac{2^2 \lambda}{2!}} \exp{(-\lambda y^2)}y,\cdots\}$<br>这两个都是无限维向量，也即是一个映射函数$\phi(\cdot)$。于是式子(3.20)可以改写为:</p>
 <script type="math/tex; mode=display">
 \exp(-||x-y||^2/2\sigma^2) = \mathbf{x}^T \mathbf{y} = \phi(\mathbf{x})^T \phi(\mathbf{y})
 \tag{3.21}</script><p>看，我们常用的高斯核函数正是一个无限维映射的核函数。</p>
@@ -792,7 +792,7 @@ f = (f_1, f_2, \cdots,)^T_{\mathcal{H}}
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -966,7 +966,7 @@ f = (f_1, f_2, \cdots,)^T_{\mathcal{H}}
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共41.1k字</span>
+  <span class="post-count">博客全站共41.4k字</span>
 </div>
         
 
